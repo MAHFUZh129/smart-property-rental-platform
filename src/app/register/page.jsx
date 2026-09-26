@@ -14,8 +14,7 @@ const Register = () => {
                     <div className="max-w-md">
 
                         {/* Logo */}
-                        <div className="mb-8 flex items-center gap-3">
-                           
+                        <div className="mb-8 flex  items-center gap-3">
 
                            <Logo></Logo>
                         </div>
@@ -27,7 +26,7 @@ const Register = () => {
 
                         <h1 className="text-4xl font-bold leading-tight text-slate-900 xl:text-5xl dark:text-white">
                             Find a place you’ll
-                            <span className="block text-slate-500 dark:text-slate-300">
+                            <span className="block text-brand-500 dark:text-slate-300">
                                 love to call home.
                             </span>
                         </h1>

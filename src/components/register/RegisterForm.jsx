@@ -1,20 +1,22 @@
 
 "use client";
-
-// import { useState } from "react";
 import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Home, Building2 } from "lucide-react";
+import { Eye, EyeOff, Home, Building2, Upload, X } from "lucide-react";
 // import { registerUser } from "@/app/actions/auth";
 import React, { useState } from 'react';
+import { FcGoogle } from "react-icons/fc";
+import Image from "next/image";
 
 const RegisterForm = () => {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [serverError, setServerError] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+
 
     const {
         register,
@@ -29,7 +31,10 @@ const RegisterForm = () => {
 
     // const role = watch("role");
 
-    async function onSubmit(values) {
+    console.log(router)
+
+    const onSubmit = async (values) => {
+        console.log(values)
         setServerError("");
         setSubmitting(true);
         try {
@@ -70,14 +75,14 @@ const RegisterForm = () => {
             <div className="mt-8 grid grid-cols-2 gap-3">
                 <button
                     type="button"
-                    // onClick={() => setValue("role", "tenant", { shouldValidate: true })}
-                    // className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "tenant"
-                    //         ? "border-brand-600 bg-brand-50"
-                    //         : "border-slate-200 hover:border-slate-300"
-                    //     }`}
+                // onClick={() => setValue("role", "tenant", { shouldValidate: true })}
+                // className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "tenant"
+                //         ? "border-brand-600 bg-brand-50"
+                //         : "border-slate-200 hover:border-slate-300"
+                //     }`}
                 >
                     <Home
-                        // className={`h-5 w-5 ${role === "tenant" ? "text-brand-600" : "text-slate-400"}`}
+                    // className={`h-5 w-5 ${role === "tenant" ? "text-brand-600" : "text-slate-400"}`}
                     />
                     <div>
                         <p className="text-sm font-semibold text-slate-900">I'm a tenant</p>
@@ -88,13 +93,13 @@ const RegisterForm = () => {
                 <button
                     type="button"
                     onClick={() => setValue("role", "landlord", { shouldValidate: true })}
-                    // className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "landlord"
-                    //         ? "border-brand-600 bg-brand-50"
-                    //         : "border-slate-200 hover:border-slate-300"
-                    //     }`}
+                // className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "landlord"
+                //         ? "border-brand-600 bg-brand-50"
+                //         : "border-slate-200 hover:border-slate-300"
+                //     }`}
                 >
                     <Building2
-                        // className={`h-5 w-5 ${role === "landlord" ? "text-brand-600" : "text-slate-400"}`}
+                    // className={`h-5 w-5 ${role === "landlord" ? "text-brand-600" : "text-slate-400"}`}
                     />
                     <div>
                         <p className="text-sm font-semibold text-slate-900">I'm a landlord</p>
@@ -103,9 +108,10 @@ const RegisterForm = () => {
                 </button>
             </div>
 
-            <form 
-            // onSubmit={handleSubmit(onSubmit)} 
-            className="mt-6 space-y-4">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="mt-6 space-y-4">
+                {/* name */}
                 <div>
                     <label htmlFor="name" className="block text-sm font-medium text-slate-700">
                         Full name
@@ -120,6 +126,71 @@ const RegisterForm = () => {
                     {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name.message}</p>}
                 </div>
 
+                {/* image */}
+                <div>
+                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                        Profile Image
+                    </label>
+                    {
+                        !selectedImage ? (
+                            <label className="flex w-full cursor-pointer items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 transition hover:border-slate-400 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-slate-600">
+
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm dark:bg-slate-800">
+                                    <Upload className="h-5 w-5 text-slate-500" />
+                                </div>
+
+                                <div className="min-w-0">
+                                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                                        Upload profile image
+                                    </p>
+
+                                    <p className="text-xs text-slate-400">
+                                        PNG, JPG or WEBP · Max 5MB
+                                    </p>
+                                </div>
+
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                     {...register("image" ,{onChange:(e)=>{
+                                        const file = e.target.files?.[0]
+                                        setSelectedImage(file || null);
+                                     }})}
+                                  
+                                    className="hidden"
+                                />
+                            </label>
+                        ) : (
+                            <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5 dark:border-slate-700 dark:bg-slate-900">
+                                {/* Image Preview */}
+                                <Image
+                                src={URL.createObjectURL(selectedImage)}
+                                alt="Profile preview"
+                                width={60}
+                                height={40}   
+                                 />
+                               
+                                {/* File Information */}
+                                <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-medium text-slate-700 dark:text-slate-200"> {selectedImage.name}
+                                    </p>
+                                    <p className="text-xs text-slate-400">
+                                        {(selectedImage.size / 1024 / 1024).toFixed(2)} MB
+                                    </p>
+                                </div>
+                                {/* Remove */}
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedImage(null)}
+                                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30" >
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
+                        )
+                    }
+
+                </div>
+                {/* email */}
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-slate-700">
                         Email
@@ -133,7 +204,7 @@ const RegisterForm = () => {
                     />
                     {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email.message}</p>}
                 </div>
-
+                {/* password */}
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium text-slate-700">
                         Password
@@ -159,7 +230,7 @@ const RegisterForm = () => {
                         <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>
                     )}
                 </div>
-
+                {/* Confirm password */}
                 <div>
                     <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700">
                         Confirm password
@@ -176,6 +247,7 @@ const RegisterForm = () => {
                     )}
                 </div>
 
+                {/* agreeToTerms */}
                 <label className="flex items-start gap-2 pt-1">
                     <input
                         type="checkbox"
@@ -221,24 +293,7 @@ const RegisterForm = () => {
                 onClick={() => signIn("google", { callbackUrl: "/tenant/dashboard" })}
                 className="flex w-full items-center justify-center gap-3 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
             >
-                <svg className="h-4 w-4" viewBox="0 0 24 24">
-                    <path
-                        fill="#4285F4"
-                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
-                    />
-                    <path
-                        fill="#34A853"
-                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.85A11 11 0 0 0 12 23z"
-                    />
-                    <path
-                        fill="#FBBC05"
-                        d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.85z"
-                    />
-                    <path
-                        fill="#EA4335"
-                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.66 2.85C6.71 7.31 9.14 5.38 12 5.38z"
-                    />
-                </svg>
+                <FcGoogle size={28} />
                 Continue with Google
             </button>
         </div>
