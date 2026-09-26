@@ -5,10 +5,12 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Home, Building2, Upload, X } from "lucide-react";
-// import { registerUser } from "@/app/actions/auth";
 import React, { useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
+import Swal from "sweetalert2";
+import { uploadImage } from "@/lib/utils/uploadImage";
+import { registerUser } from "@/actions/server/auth";
 
 const RegisterForm = () => {
     const router = useRouter();
@@ -16,7 +18,6 @@ const RegisterForm = () => {
     const [serverError, setServerError] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-
 
     const {
         register,
@@ -29,37 +30,55 @@ const RegisterForm = () => {
         defaultValues: { role: "tenant" },
     });
 
-    // const role = watch("role");
+    const role = watch("role");
 
-    console.log(router)
+    const onSubmit = async (userInfo) => {
 
-    const onSubmit = async (values) => {
         setServerError("");
-        console.log("1. onSubmit called");
-    console.log("Before:", submitting);
+        setSubmitting(true);
 
-    setSubmitting(true);
-
-    console.log("2. setSubmitting(true) called",submitting);
         try {
-            const result = await registerUser(values);
+            let photoURL = "";
+
+            if (userInfo.image?.length > 0) {
+                const imageFile = userInfo.image[0];
+
+                photoURL = await uploadImage(imageFile);
+            }
+
+            const userData = {
+                ...userInfo,
+                photoURL
+
+            }
+
+            const result = await registerUser(userData);
+            console.log(result)
 
             if (!result.success) {
                 setServerError(result.message);
+                Swal.fire({
+                    icon: "error",
+                    title: result.message,
+                    text: "opps! Something went wrong ",
+                    timer: 4000
+                });
                 return;
             }
 
-            // Auto sign-in after successful registration
-            await signIn("credentials", {
-                email: values.email,
-                password: values.password,
-                redirect: false,
+            Swal.fire({
+                icon: "success",
+                title: result.message,
+                text: "Your account has been created!",
+                timer: 3000
             });
+            router.push(userInfo.role === "landlord" ? "/landlord/dashboard" : "/tenant/dashboard");
 
-            router.push(values.role === "landlord" ? "/landlord/dashboard" : "/tenant/dashboard");
         } catch (err) {
+
             setServerError("Couldn't reach the server. Please try again.");
-        } finally {
+        }
+        finally {
             setSubmitting(false);
         }
     }
@@ -75,18 +94,18 @@ const RegisterForm = () => {
                 </a>
             </p>
 
-            {/* Role toggle */}
+            {/* register as Role */}
             <div className="mt-8 grid grid-cols-2 gap-3">
                 <button
                     type="button"
-                // onClick={() => setValue("role", "tenant", { shouldValidate: true })}
-                // className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "tenant"
-                //         ? "border-brand-600 bg-brand-50"
-                //         : "border-slate-200 hover:border-slate-300"
-                //     }`}
+                onClick={() => setValue("role", "tenant", { shouldValidate: true })}
+                className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "tenant"
+                        ? "border-brand-600 bg-brand-50"
+                        : "border-slate-200 hover:border-slate-300"
+                    }`}
                 >
                     <Home
-                    // className={`h-5 w-5 ${role === "tenant" ? "text-brand-600" : "text-slate-400"}`}
+                    className={`h-5 w-5 ${role === "tenant" ? "text-brand-600" : "text-slate-400"}`}
                     />
                     <div>
                         <p className="text-sm font-semibold text-slate-900">I'm a tenant</p>
@@ -97,13 +116,13 @@ const RegisterForm = () => {
                 <button
                     type="button"
                     onClick={() => setValue("role", "landlord", { shouldValidate: true })}
-                // className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "landlord"
-                //         ? "border-brand-600 bg-brand-50"
-                //         : "border-slate-200 hover:border-slate-300"
-                //     }`}
+                className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "landlord"
+                        ? "border-brand-600 bg-brand-50"
+                        : "border-slate-200 hover:border-slate-300"
+                    }`}
                 >
                     <Building2
-                    // className={`h-5 w-5 ${role === "landlord" ? "text-brand-600" : "text-slate-400"}`}
+                    className={`h-5 w-5 ${role === "landlord" ? "text-brand-600" : "text-slate-400"}`}
                     />
                     <div>
                         <p className="text-sm font-semibold text-slate-900">I'm a landlord</p>
@@ -112,6 +131,7 @@ const RegisterForm = () => {
                 </button>
             </div>
 
+             {/* form */}
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="mt-6 space-y-4">
@@ -156,7 +176,7 @@ const RegisterForm = () => {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    {...register("image", {
+                                    {...register("image",{required:'Opps!! Please,Upload your photo'}, {
                                         onChange: (e) => {
                                             const file = e.target.files?.[0]
                                             setSelectedImage(file || null);
@@ -165,6 +185,8 @@ const RegisterForm = () => {
 
                                     className="hidden"
                                 />
+                                {errors.image && <p className="mt-1 text-xs text-red-600">{errors.image.message}</p>}
+                                
                             </label>
                         ) : (
                             <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5 dark:border-slate-700 dark:bg-slate-900">
@@ -251,11 +273,11 @@ const RegisterForm = () => {
                     <input
                         id="confirmPassword"
                         type={showPassword ? "text" : "password"}
-                        {...register("confirmPassword",{
-                            required:"Please confirm your password",
-                            validate:(value)=>
-                                 value === watch("password") || "Passwords do not match"
-                            
+                        {...register("confirmPassword", {
+                            required: "Please confirm your password",
+                            validate: (value) =>
+                                value === watch("password") || "Passwords do not match"
+
 
                         })}
                         className="mt-1.5 w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -270,7 +292,7 @@ const RegisterForm = () => {
                 <label className="flex items-start gap-2 pt-1">
                     <input
                         type="checkbox"
-                        {...register("agreeToTerms")}
+                        {...register("agreeToTerms",{required:"You must agree to the terms"})}
                         className="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
                     />
                     <span className="text-sm text-slate-600">
