@@ -34,9 +34,13 @@ const RegisterForm = () => {
     console.log(router)
 
     const onSubmit = async (values) => {
-        console.log(values)
         setServerError("");
-        setSubmitting(true);
+        console.log("1. onSubmit called");
+    console.log("Before:", submitting);
+
+    setSubmitting(true);
+
+    console.log("2. setSubmitting(true) called",submitting);
         try {
             const result = await registerUser(values);
 
@@ -152,11 +156,13 @@ const RegisterForm = () => {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                     {...register("image" ,{onChange:(e)=>{
-                                        const file = e.target.files?.[0]
-                                        setSelectedImage(file || null);
-                                     }})}
-                                  
+                                    {...register("image", {
+                                        onChange: (e) => {
+                                            const file = e.target.files?.[0]
+                                            setSelectedImage(file || null);
+                                        }
+                                    })}
+
                                     className="hidden"
                                 />
                             </label>
@@ -164,12 +170,12 @@ const RegisterForm = () => {
                             <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5 dark:border-slate-700 dark:bg-slate-900">
                                 {/* Image Preview */}
                                 <Image
-                                src={URL.createObjectURL(selectedImage)}
-                                alt="Profile preview"
-                                width={60}
-                                height={40}   
-                                 />
-                               
+                                    src={URL.createObjectURL(selectedImage)}
+                                    alt="Profile preview"
+                                    width={60}
+                                    height={40}
+                                />
+
                                 {/* File Information */}
                                 <div className="min-w-0 flex-1">
                                     <p className="truncate text-sm font-medium text-slate-700 dark:text-slate-200"> {selectedImage.name}
@@ -213,7 +219,14 @@ const RegisterForm = () => {
                         <input
                             id="password"
                             type={showPassword ? "text" : "password"}
-                            {...register("password")}
+                            {...register("password", {
+                                required: "Password is required",
+                                minLength: {
+                                    value: 8,
+                                    message: "Password must be at least 8 characters",
+                                },
+
+                            })}
                             className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                             placeholder="At least 8 characters"
                         />
@@ -238,7 +251,13 @@ const RegisterForm = () => {
                     <input
                         id="confirmPassword"
                         type={showPassword ? "text" : "password"}
-                        {...register("confirmPassword")}
+                        {...register("confirmPassword",{
+                            required:"Please confirm your password",
+                            validate:(value)=>
+                                 value === watch("password") || "Passwords do not match"
+                            
+
+                        })}
                         className="mt-1.5 w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                         placeholder="Re-enter your password"
                     />
