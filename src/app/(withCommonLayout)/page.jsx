@@ -1,13 +1,26 @@
+import CallToAction from "@/components/home/CallToAction";
+import FeaturedProperties from "@/components/home/FeaturedProperties";
+import Hero from "@/components/home/Hero";
+import HowItWorks from "@/components/home/HowItWorks";
+import PlatformStats from "@/components/home/PlatformStats";
+import PopularProperties from "@/components/home/PopularProperties";
+import PropertyCategories from "@/components/home/PropertyCategories";
+import PropertySearch from "@/components/home/PropertySearch";
+import Testimonials from "@/components/home/Testimonials";
+
 export default function HomePage() {
   return (
-    <div>
-      <h1 className="text-4xl font-bold">
-        Welcome to Nestly
-      </h1>
+    <main>
+      <Hero />
+      <PropertySearch />
+      <HowItWorks />
+      <PropertyCategories />
+      <FeaturedProperties />
+      <PlatformStats />
+      <PopularProperties />
+       <Testimonials />
+       <CallToAction />
 
-      <p>
-        Find your perfect property with Nestly.
-      </p>
-    </div>
+    </main>
   );
 }
