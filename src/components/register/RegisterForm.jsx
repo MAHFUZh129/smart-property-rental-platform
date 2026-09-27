@@ -103,9 +103,9 @@ const RegisterForm = () => {
             <h1 className="font-serif text-3xl text-slate-900">Create your account</h1>
             <p className="mt-2 text-sm text-slate-600">
                 Already have one?{" "}
-                <a href="/login" className="font-semibold text-brand-600 hover:text-brand-700">
+                <button onClick={() => signIn()} className="font-semibold text-brand-600 hover:text-brand-700">
                     Log in
-                </a>
+                </button>
             </p>
 
             {/* register as Role */}

@@ -21,6 +21,7 @@ import {
 
 import Logo from "./Logo";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 const NAV_LINKS = [
     { label: "Home", href: "/" },
@@ -44,7 +45,7 @@ const Navbar = () => {
     const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
-    
+
 
     const pathname = usePathname();
     const dropdownRef = useRef(null);
@@ -248,11 +249,19 @@ const Navbar = () => {
 
                                 {/* Profile Image */}
                                 {session.user?.image ? (
-                                    <img
+                                    <Image
                                         src={session.user.image}
                                         alt={session.user?.name || "Profile"}
+                                        width={90}
+                                        height={90}
                                         className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+
                                     />
+                                    // <img
+                                    //     src={session.user.image}
+                                    //     alt={session.user?.name || "Profile"}
+                                    //     className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+                                    // />
                                 ) : (
                                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white shadow-sm">
                                         <User className="h-5 w-5" />
@@ -281,8 +290,8 @@ const Navbar = () => {
                             {/* profile dropdown */}
                             <div
                                 className={`absolute right-0 top-full z-50 mt-3 w-72 origin-top-right transition-all duration-200 ${profileOpen
-                                        ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
-                                        : "pointer-events-none -translate-y-2 scale-95 opacity-0"
+                                    ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+                                    : "pointer-events-none -translate-y-2 scale-95 opacity-0"
                                     }`}
                             >
 
@@ -294,11 +303,19 @@ const Navbar = () => {
                                         <div className="flex items-center gap-3">
 
                                             {session.user?.image ? (
-                                                <img
+                                                <Image
                                                     src={session.user.image}
                                                     alt={session.user?.name || "Profile"}
-                                                    className="h-12 w-12 rounded-full object-cover ring-2 ring-white shadow-md"
+                                                    width={90}
+                                                    height={90}
+                                                    className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+
                                                 />
+                                                // <img
+                                                //     src={session.user.image}
+                                                //     alt={session.user?.name || "Profile"}
+                                                //     className="h-12 w-12 rounded-full object-cover ring-2 ring-white shadow-md"
+                                                // />
                                             ) : (
                                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white shadow-md">
                                                     <User className="h-6 w-6" />
@@ -516,7 +533,7 @@ const Navbar = () => {
                         </div>
 
                     ) : session ? (
-                       
+
                         // log in for mobile
                         <div>
 
@@ -524,11 +541,19 @@ const Navbar = () => {
                             <div className="mb-3 flex items-center gap-3 rounded-xl bg-slate-50 p-3">
 
                                 {session.user?.image ? (
-                                    <img
-                                        src={session.user.image}
+                                     <Image
+                                     src={session.user.image}
                                         alt={session.user?.name || "Profile"}
-                                        className="h-11 w-11 rounded-full object-cover"
+                                        width={90}
+                                        height={90}
+                                        className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
+
                                     />
+                                    // <img
+                                    //     src={session.user.image}
+                                    //     alt={session.user?.name || "Profile"}
+                                    //     className="h-11 w-11 rounded-full object-cover"
+                                    // />
                                 ) : (
                                     <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white">
                                         <User className="h-5 w-5" />
