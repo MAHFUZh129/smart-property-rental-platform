@@ -15,10 +15,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Rentora | Property Rental Platform",
+  title: {
+    default: "Rentora | Property Rental Platform",
+    template: "%s | Rentora",
+  },
   description:
     "Find, rent, and manage properties easily with Rentora — a modern property rental and management platform.",
 };
+  
 
 export default function RootLayout({ children }) {
   return (
