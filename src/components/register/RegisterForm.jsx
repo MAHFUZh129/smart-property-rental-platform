@@ -66,6 +66,19 @@ const RegisterForm = () => {
                 return;
             }
 
+            const loginResult = await signIn("credentials", {
+                email: userInfo.email,
+                password: userInfo.password,
+                redirect: false,
+            });
+
+            console.log("LOGIN RESULT:", loginResult);
+
+
+            if (!loginResult?.ok) {
+                setServerError("Account created, but login failed.");
+                return;
+            }
             Swal.fire({
                 icon: "success",
                 title: result.message,
@@ -98,14 +111,14 @@ const RegisterForm = () => {
             <div className="mt-8 grid grid-cols-2 gap-3">
                 <button
                     type="button"
-                onClick={() => setValue("role", "tenant", { shouldValidate: true })}
-                className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "tenant"
+                    onClick={() => setValue("role", "tenant", { shouldValidate: true })}
+                    className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "tenant"
                         ? "border-brand-600 bg-brand-50"
                         : "border-slate-200 hover:border-slate-300"
-                    }`}
+                        }`}
                 >
                     <Home
-                    className={`h-5 w-5 ${role === "tenant" ? "text-brand-600" : "text-slate-400"}`}
+                        className={`h-5 w-5 ${role === "tenant" ? "text-brand-600" : "text-slate-400"}`}
                     />
                     <div>
                         <p className="text-sm font-semibold text-slate-900">I'm a tenant</p>
@@ -116,13 +129,13 @@ const RegisterForm = () => {
                 <button
                     type="button"
                     onClick={() => setValue("role", "landlord", { shouldValidate: true })}
-                className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "landlord"
+                    className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-colors ${role === "landlord"
                         ? "border-brand-600 bg-brand-50"
                         : "border-slate-200 hover:border-slate-300"
-                    }`}
+                        }`}
                 >
                     <Building2
-                    className={`h-5 w-5 ${role === "landlord" ? "text-brand-600" : "text-slate-400"}`}
+                        className={`h-5 w-5 ${role === "landlord" ? "text-brand-600" : "text-slate-400"}`}
                     />
                     <div>
                         <p className="text-sm font-semibold text-slate-900">I'm a landlord</p>
@@ -131,7 +144,7 @@ const RegisterForm = () => {
                 </button>
             </div>
 
-             {/* form */}
+            {/* form */}
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="mt-6 space-y-4">
@@ -176,17 +189,16 @@ const RegisterForm = () => {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    {...register("image",{required:'Opps!! Please,Upload your photo'}, {
+                                    {...register("image", { required: 'Opps!! Please,Upload your photo',
                                         onChange: (e) => {
                                             const file = e.target.files?.[0]
                                             setSelectedImage(file || null);
-                                        }
-                                    })}
+                                        } })}
 
                                     className="hidden"
                                 />
                                 {errors.image && <p className="mt-1 text-xs text-red-600">{errors.image.message}</p>}
-                                
+
                             </label>
                         ) : (
                             <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5 dark:border-slate-700 dark:bg-slate-900">
@@ -195,7 +207,7 @@ const RegisterForm = () => {
                                     src={URL.createObjectURL(selectedImage)}
                                     alt="Profile preview"
                                     width={60}
-                                    height={40}
+                                    height={30}
                                 />
 
                                 {/* File Information */}
@@ -292,7 +304,7 @@ const RegisterForm = () => {
                 <label className="flex items-start gap-2 pt-1">
                     <input
                         type="checkbox"
-                        {...register("agreeToTerms",{required:"You must agree to the terms"})}
+                        {...register("agreeToTerms", { required: "You must agree to the terms" })}
                         className="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
                     />
                     <span className="text-sm text-slate-600">

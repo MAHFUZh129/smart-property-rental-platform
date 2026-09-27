@@ -1,5 +1,6 @@
 "use server"
 
+import bcrypt from "bcryptjs";
 import { dbConnect } from "@/lib/dbConnect"
 
 
@@ -19,14 +20,20 @@ export const registerUser = async (userData) => {
         };
     }
 
-    // 3. New user create
-    const result = await users.insertOne({
-        name: userData.name,
+    
+    // 3. New user create   
+    const hashPassword = await bcrypt.hash(userData.password,12)
+
+    const newUser = {
+         name: userData.name,
         email: userData.email,
         photoURL: userData.photoURL,
-        password: userData.password,
+        password: hashPassword,
         role: userData.role,
-    });
+
+    }
+
+    const result = await users.insertOne(newUser)
 
     // 4. Success response
     return {
