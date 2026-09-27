@@ -11,6 +11,7 @@ import Image from "next/image";
 import Swal from "sweetalert2";
 import { uploadImage } from "@/lib/utils/uploadImage";
 import { registerUser } from "@/actions/server/auth";
+import { FaGithub } from "react-icons/fa";
 
 const RegisterForm = () => {
     const router = useRouter();
@@ -335,7 +336,7 @@ const RegisterForm = () => {
                 </button>
             </form>
 
-            <div className="my-6 flex items-center gap-3">
+            <div className=" flex items-center gap-3">
                 <div className="h-px flex-1 bg-slate-200" />
                 <span className="text-xs text-slate-400">or</span>
                 <div className="h-px flex-1 bg-slate-200" />
@@ -343,12 +344,29 @@ const RegisterForm = () => {
 
             <button
                 type="button"
-                onClick={() => signIn("google", { callbackUrl: "/tenant/dashboard" })}
+                onClick={() => signIn("google", { callbackUrl: "/" })}
                 className="flex w-full items-center justify-center gap-3 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
             >
                 <FcGoogle size={28} />
                 Continue with Google
             </button>
+
+            <div className=" flex items-center gap-3">
+                <div className="h-px flex-1 bg-slate-200" />
+                <span className="text-xs text-slate-400">or</span>
+                <div className="h-px flex-1 bg-slate-200" />
+            </div>
+
+            <button
+                type="button"
+                onClick={() => signIn("github", { callbackUrl: "/" })}
+                className="flex w-full items-center justify-center gap-3 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            >
+                <FaGithub size={28} />
+                Continue with Github
+            </button>
+
+
         </div>
     );
 };

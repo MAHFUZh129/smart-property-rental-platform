@@ -27,7 +27,7 @@ export const registerUser = async (userData) => {
     const newUser = {
          name: userData.name,
         email: userData.email,
-        photoURL: userData.photoURL,
+        image: userData.photoURL,
         password: hashPassword,
         role: userData.role,
 
