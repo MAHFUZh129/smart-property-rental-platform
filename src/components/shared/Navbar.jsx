@@ -9,10 +9,7 @@ import {
     Home,
     Building2,
     Search,
-    ChevronDown,
-    Landmark,
-    Warehouse,
-    DoorOpen,
+    ChevronDown,    
     User,
     Settings,
     LogOut,
@@ -22,24 +19,12 @@ import {
 import Logo from "./Logo";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { NAV_LINKS, PROPERTY_TYPES } from "@/data/navbar/nav-data";
 
-const NAV_LINKS = [
-    { label: "Home", href: "/" },
-    { label: "Properties", href: "/properties", hasMenu: true },
-    { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
-    { label: "FAQ", href: "/faq" },
-];
 
-const PROPERTY_TYPES = [
-    { label: "Apartments", href: "/properties?type=apartment", Icon: Building2, blurb: "City living, ready to move in" },
-    { label: "Houses", href: "/properties?type=house", Icon: Home, blurb: "Full homes for families" },
-    { label: "Studios", href: "/properties?type=studio", Icon: DoorOpen, blurb: "Compact and budget-friendly" },
-    { label: "Villas", href: "/properties?type=villa", Icon: Landmark, blurb: "Space, privacy, and comfort" },
-    { label: "Offices", href: "/properties?type=office", Icon: Warehouse, blurb: "Workspaces for growing teams" },
-];
 
 const Navbar = () => {
+
     const [propertiesOpen, setPropertiesOpen] = useState(false);
     const [mobilePropertiesOpen, setMobilePropertiesOpen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -54,7 +39,7 @@ const Navbar = () => {
     // close the mobile menu 
     const { data: session, status } = useSession()
 
-    console.log({ session, status })
+    // console.log({ session, status })
 
     useEffect(() => {
         const onResize = () => {
@@ -311,11 +296,7 @@ const Navbar = () => {
                                                     className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
 
                                                 />
-                                                // <img
-                                                //     src={session.user.image}
-                                                //     alt={session.user?.name || "Profile"}
-                                                //     className="h-12 w-12 rounded-full object-cover ring-2 ring-white shadow-md"
-                                                // />
+                                                
                                             ) : (
                                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white shadow-md">
                                                     <User className="h-6 w-6" />
@@ -549,11 +530,7 @@ const Navbar = () => {
                                         className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
 
                                     />
-                                    // <img
-                                    //     src={session.user.image}
-                                    //     alt={session.user?.name || "Profile"}
-                                    //     className="h-11 w-11 rounded-full object-cover"
-                                    // />
+                         
                                 ) : (
                                     <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white">
                                         <User className="h-5 w-5" />
