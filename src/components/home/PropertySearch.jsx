@@ -13,7 +13,7 @@ const PropertySearch = () => {
         console.log(e.target.value)
         e.preventDefault();
         const params = new URLSearchParams();
-        if (location) params.set("location", location);
+        if (location) params.set("city", location);
         if (type) params.set("type", type);
         if (maxPrice) params.set("maxPrice", maxPrice);
         window.location.href = `/properties?${params.toString()}`;
@@ -49,12 +49,12 @@ const PropertySearch = () => {
                             className="w-full border-0 bg-transparent p-0 text-sm text-slate-900 focus:outline-none focus:ring-0"
                         >
                             <option value="">Any type</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="house">House</option>
-                            <option value="room">Room</option>
-                            <option value="studio">Studio</option>
-                            <option value="villa">Villa</option>
-                            <option value="office">Office</option>
+                            <option value="Apartment">Apartment</option>
+                            <option value="House">House</option>
+                            <option value="Room">Room</option>
+                            <option value="Studio">Studio</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Office">Office</option>
                         </select>
                     </div>
                 </label>

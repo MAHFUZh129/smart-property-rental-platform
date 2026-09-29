@@ -15,7 +15,10 @@ export const getProperties = async (filters = {}) => {
    }
 
    if (filters.city) {
-      query.city = filters.city
+      // query.city = filters.city
+      query.$or = [
+         {city:{$regex:filters.city , $options:'i'}}
+      ]
    }
    if (filters.bedrooms) {
       query.bedrooms = { $gte: Number(filters.bedrooms) }
