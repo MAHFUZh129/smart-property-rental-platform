@@ -19,9 +19,9 @@ export const NAV_LINKS = [
 
 // PROPERTY_TYPES
 export const PROPERTY_TYPES = [
-    { label: "Apartments", href: "/properties?type=apartment", Icon: Building2, blurb: "City living, ready to move in" },
-    { label: "Houses", href: "/properties?type=house", Icon: Home, blurb: "Full homes for families" },
-    { label: "Studios", href: "/properties?type=studio", Icon: DoorOpen, blurb: "Compact and budget-friendly" },
-    { label: "Villas", href: "/properties?type=villa", Icon: Landmark, blurb: "Space, privacy, and comfort" },
-    { label: "Offices", href: "/properties?type=office", Icon: Warehouse, blurb: "Workspaces for growing teams" },
+    { label: "Apartments", href: "/properties?type=Apartment", Icon: Building2, blurb: "City living, ready to move in" },
+    { label: "Houses", href: "/properties?type=House", Icon: Home, blurb: "Full homes for families" },
+    { label: "Studios", href: "/properties?type=Studio", Icon: DoorOpen, blurb: "Compact and budget-friendly" },
+    { label: "Villas", href: "/properties?type=Villa", Icon: Landmark, blurb: "Space, privacy, and comfort" },
+    { label: "Offices", href: "/properties?type=Office", Icon: Warehouse, blurb: "Workspaces for growing teams" },
 ];

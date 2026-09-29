@@ -5,7 +5,7 @@ const  PageHeader =({ total }) =>{
   return (
     <div>
         <header className="relative overflow-hidden bg-brand-900 pb-24 pt-16 text-white">
-      {/* Soft decorative circles */}
+      {/*  circles */}
       <div className="absolute -right-24 -top-24 size-80 rounded-full bg-brand-700/40" />
       <div className="absolute -bottom-32 left-1/3 size-72 rounded-full bg-brand-800/70" />
 
