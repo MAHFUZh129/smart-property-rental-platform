@@ -37,7 +37,7 @@ const PropertyDetails = async ({ params }) => {
     const { result: property } = await getPropertyById(id);
 
     if (!property) {
-        return notFound
+        return notFound()
     }
 
     const { data: similarProperties } = await getSimilarProperties(property)

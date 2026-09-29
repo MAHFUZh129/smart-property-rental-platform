@@ -85,6 +85,9 @@ export const getPropertyById = async(id)=>{
 
    const result = await properties.findOne({_id: new ObjectId(id)})
 
+  if (!result) {
+    return{ result: null}
+  }
 
    return {
       result:{
@@ -93,8 +96,6 @@ export const getPropertyById = async(id)=>{
       }
      
    }
-
-
 }
 
 
