@@ -1,9 +1,11 @@
 'use server'
 import { dbConnect } from "@/lib/dbConnect"
+import { ObjectId } from "mongodb";
 
 
 const properties = dbConnect('properties')
 
+// for all properties
 export const getProperties = async (filters = {}) => {
 
    const query = { status: "approved" };
@@ -51,6 +53,49 @@ export const getProperties = async (filters = {}) => {
    }
 }
 
+
+// similar Properties
+export const  getSimilarProperties = async(property)=>{
+
+   const {status, propertyType, city, _id} = property
+
+   const id = {$ne: new ObjectId(_id)}
+
+   const query = {status, propertyType, city, _id:id}
+
+   const results = await properties.find(query).toArray()
+
+   const data = results.map(result=>(
+      {...result,
+         _id:result._id.toString()
+
+      }
+   ))
+        
+   return {
+      data
+   }
+
+}
+
+
+
+// for details
+export const getPropertyById = async(id)=>{
+
+   const result = await properties.findOne({_id: new ObjectId(id)})
+
+
+   return {
+      result:{
+    ...result,
+      _id:result._id.toString()
+      }
+     
+   }
+
+
+}
 
 
 
