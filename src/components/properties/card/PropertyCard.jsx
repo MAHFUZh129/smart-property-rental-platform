@@ -93,7 +93,6 @@ const PropertyCard =({ property }) =>{
     createdAt,
   } = property;
 
-  console.log(createdAt)
 
   const TypeIcon = TYPE_ICONS[propertyType] || Building2;
 

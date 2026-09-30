@@ -14,10 +14,28 @@ export const getProperties = async (filters = {}) => {
       query.propertyType = filters.type
    }
 
+   let sortOption = { createdAt: -1 };
+
+   if (filters.sort) {
+
+      if (filters.sort === "price-asc") {
+         sortOption = { price: 1 };
+      }
+
+      if (filters.sort === "price-desc") {
+         sortOption = { price: -1 };
+      }
+
+      if (filters.sort === "rating") {
+         sortOption = { rating: -1 };
+      }
+
+   }
+
    if (filters.city) {
       // query.city = filters.city
       query.$or = [
-         {city:{$regex:filters.city , $options:'i'}}
+         { city: { $regex: filters.city, $options: 'i' } }
       ]
    }
    if (filters.bedrooms) {
@@ -30,14 +48,14 @@ export const getProperties = async (filters = {}) => {
       query.$or = [
          { title: { $regex: filters.search, $options: 'i' } },
 
-         { description: { $regex: filters.search ,$options: 'i' } }
+         { description: { $regex: filters.search, $options: 'i' } }
       ]
    }
 
    //  pagination
    const page = Math.max(Number(filters.page) || 1, 1)
 
-   const results = await properties.find(query).sort({ createdat: -1 }).limit(9).skip((page - 1) * 9).toArray()
+   const results = await properties.find(query).sort(sortOption).limit(9).skip((page - 1) * 9).toArray()
 
    const totalProperties = await properties.countDocuments(query)
 
@@ -58,23 +76,24 @@ export const getProperties = async (filters = {}) => {
 
 
 // similar Properties
-export const  getSimilarProperties = async(property)=>{
+export const getSimilarProperties = async (property) => {
 
-   const {status, propertyType, city, _id} = property
+   const { status, propertyType, city, _id } = property
 
-   const id = {$ne: new ObjectId(_id)}
+   const id = { $ne: new ObjectId(_id) }
 
-   const query = {status, propertyType, city, _id:id}
+   const query = { status, propertyType, city, _id: id }
 
    const results = await properties.find(query).toArray()
 
-   const data = results.map(result=>(
-      {...result,
-         _id:result._id.toString()
+   const data = results.map(result => (
+      {
+         ...result,
+         _id: result._id.toString()
 
       }
    ))
-        
+
    return {
       data
    }
@@ -84,20 +103,20 @@ export const  getSimilarProperties = async(property)=>{
 
 
 // for details
-export const getPropertyById = async(id)=>{
+export const getPropertyById = async (id) => {
 
-   const result = await properties.findOne({_id: new ObjectId(id)})
+   const result = await properties.findOne({ _id: new ObjectId(id) })
 
-  if (!result) {
-    return{ result: null}
-  }
+   if (!result) {
+      return { result: null }
+   }
 
    return {
-      result:{
-    ...result,
-      _id:result._id.toString()
+      result: {
+         ...result,
+         _id: result._id.toString()
       }
-     
+
    }
 }
 

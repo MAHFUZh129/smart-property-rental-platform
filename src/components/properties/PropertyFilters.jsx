@@ -77,6 +77,7 @@ const PropertyFilters = ({filters}) => {
                     className={inputStyle}
                 />
             </div>
+           
             {/* <FilterField icon={Banknote}>
                 <input
                     type="number"
