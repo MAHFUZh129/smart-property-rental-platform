@@ -2,7 +2,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Home, Building2, Upload, X } from "lucide-react";
 import React, { useState } from 'react';
@@ -14,6 +14,10 @@ import { registerUser } from "@/actions/server/auth";
 import { FaGithub } from "react-icons/fa";
 
 const RegisterForm = () => {
+
+    const session = useSession()
+    console.log(session)
+
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [serverError, setServerError] = useState("");
@@ -64,8 +68,11 @@ const RegisterForm = () => {
                     text: "opps! Something went wrong ",
                     timer: 4000
                 });
+
                 return;
             }
+
+            // login after saving in db
 
             const loginResult = await signIn("credentials", {
                 email: userInfo.email,
@@ -73,19 +80,21 @@ const RegisterForm = () => {
                 redirect: false,
             });
 
-            console.log("LOGIN RESULT:", loginResult);
-
-
             if (!loginResult?.ok) {
-                setServerError("Account created, but login failed.");
+                setServerError("Registration successful, but login failed.");
                 return;
             }
-            Swal.fire({
+
+            // registration and login successful alert
+            await Swal.fire({
                 icon: "success",
-                title: result.message,
-                text: "Your account has been created!",
-                timer: 3000
+                title: "Registration successful!",
+                text: "Welcome to Rentora.",
+                timer: 3000,
+                showConfirmButton: false,
             });
+
+
             router.push(userInfo.role === "landlord" ? "/landlord/dashboard" : "/tenant/dashboard");
 
         } catch (err) {
@@ -190,11 +199,13 @@ const RegisterForm = () => {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    {...register("image", { required: 'Opps!! Please,Upload your photo',
+                                    {...register("image", {
+                                        required: 'Opps!! Please,Upload your photo',
                                         onChange: (e) => {
                                             const file = e.target.files?.[0]
                                             setSelectedImage(file || null);
-                                        } })}
+                                        }
+                                    })}
 
                                     className="hidden"
                                 />

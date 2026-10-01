@@ -83,9 +83,18 @@ export const authOptions = {
      
    
   },
+ 
   async redirect({ url, baseUrl }) {
-    return baseUrl
-  },
+    if (url.startsWith(baseUrl)) {
+        return url;
+    }
+
+    if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+    }
+
+    return baseUrl;
+},
   async jwt({ token, user, account, profile, isNewUser }) {
 
     

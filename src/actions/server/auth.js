@@ -2,10 +2,13 @@
 
 import bcrypt from "bcryptjs";
 import { dbConnect } from "@/lib/dbConnect"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 
-const users = await dbConnect('users')
+const users =  dbConnect('users')
 
+// save users in db
 export const registerUser = async (userData) => {
 
 
@@ -43,3 +46,11 @@ export const registerUser = async (userData) => {
     };
 
 }
+
+
+// get current logged-in user
+export const getCurrentUser = async () => {
+    const session = await getServerSession(authOptions);
+
+    return session?.user || null;
+};

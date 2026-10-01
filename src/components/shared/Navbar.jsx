@@ -9,7 +9,7 @@ import {
     Home,
     Building2,
     Search,
-    ChevronDown,    
+    ChevronDown,
     User,
     Settings,
     LogOut,
@@ -242,11 +242,7 @@ const Navbar = () => {
                                         className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
 
                                     />
-                                    // <img
-                                    //     src={session.user.image}
-                                    //     alt={session.user?.name || "Profile"}
-                                    //     className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
-                                    // />
+                                   
                                 ) : (
                                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white shadow-sm">
                                         <User className="h-5 w-5" />
@@ -296,7 +292,7 @@ const Navbar = () => {
                                                     className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
 
                                                 />
-                                                
+
                                             ) : (
                                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white shadow-md">
                                                     <User className="h-6 w-6" />
@@ -380,9 +376,7 @@ const Navbar = () => {
                                             onClick={() => {
                                                 setProfileOpen(false);
 
-                                                signOut({
-                                                    callbackUrl: "/login",
-                                                });
+                                                signOut({callbackUrl:'/api/auth/signin?callbackUrl=/'});
                                             }}
                                             className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-red-600 transition-all hover:bg-red-50"
                                         >
@@ -403,7 +397,7 @@ const Navbar = () => {
 
                     ) : (
 
-                        // log out
+                        // log-in or register
                         <>
                             <button
                                 type="button"
@@ -522,15 +516,15 @@ const Navbar = () => {
                             <div className="mb-3 flex items-center gap-3 rounded-xl bg-slate-50 p-3">
 
                                 {session.user?.image ? (
-                                     <Image
-                                     src={session.user.image}
+                                    <Image
+                                        src={session.user.image}
                                         alt={session.user?.name || "Profile"}
                                         width={90}
                                         height={90}
                                         className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
 
                                     />
-                         
+
                                 ) : (
                                     <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white">
                                         <User className="h-5 w-5" />
@@ -593,9 +587,7 @@ const Navbar = () => {
                                 onClick={() => {
                                     setOpen(false);
 
-                                    signOut({
-                                        callbackUrl: "/login",
-                                    });
+                                    signOut({callbackUrl:'/api/auth/signin?callbackUrl=/'});
                                 }}
                                 className="mt-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
                             >

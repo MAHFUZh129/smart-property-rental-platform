@@ -12,7 +12,7 @@ export const metadata = {
     description: "Find apartments, houses, rooms, offices and more on Rentora.",
 };
 
-const page = async ({ searchParams }) => {
+const page = async ({ searchParams}) => {
 
     const filters = await searchParams;
 

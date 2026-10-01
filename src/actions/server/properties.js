@@ -112,7 +112,7 @@ export const getPropertyById = async (id) => {
    }
 
    return {
-      result: {
+      data: {
          ...result,
          _id: result._id.toString()
       }

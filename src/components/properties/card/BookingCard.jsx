@@ -1,11 +1,12 @@
 import React from 'react';
-import { CalendarDays, Phone, ShieldCheck } from 'lucide-react';
+import { CalendarDays, ShieldCheck } from 'lucide-react';
+import RentalRequestButton from '../button/RentalRequestButton';
 
-const BookingCard = ({property}) => {
+const BookingCard = ({property, isLoggedIn, requested}) => {
 
-    const {createdAt , price} = property
+    const {createdAt , price, _id} = property
 
-    const listedDate = new Date(createdAt.$date).toLocaleDateString("en-GB", {
+    const listedDate = new Date(createdAt).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -20,13 +21,10 @@ const BookingCard = ({property}) => {
         <span className="text-slate-500"> / month</span>
       </p>
  
-      <button
-        type="button"
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-200"
-      >
-        <Phone className="size-4" />
-        Contact landlord
-      </button>
+
+       <div className="mt-5">
+        <RentalRequestButton requested={requested } propertyId={_id} isLoggedIn={isLoggedIn} />
+      </div>
  
       <div className="mt-5 space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-500">
         <p className="flex items-center gap-2">

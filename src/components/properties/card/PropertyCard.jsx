@@ -103,7 +103,7 @@ const PropertyCard =({ property }) =>{
   // availableUnits condtion
   const isLow = availableUnits <= 2;
 
-  const listedDate = new Date(createdAt.$date).toLocaleDateString("en-GB", {
+  const listedDate = new Date(createdAt).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
