@@ -3,7 +3,7 @@ import React from 'react';
 
 const RequestSuccessBanner = () => {
     return (
-         <div className="mb-6 overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-blue-50 shadow-sm">
+         <div className="mb-6 overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-blue-100 shadow-sm">
             <div className="flex items-start gap-4 px-5 py-4">
                 
                

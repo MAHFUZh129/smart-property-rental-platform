@@ -12,6 +12,7 @@ import RequestSuccessBanner from '@/components/properties/card/RequestSuccessBan
 import SimilarProperties from '@/components/properties/details/SimilarProperties';
 import { notFound } from 'next/navigation';
 import React from 'react';
+import LandlordCard from '@/components/properties/card/LandlordCard';
 
 
 
@@ -36,19 +37,17 @@ export async function generateMetadata({ params }) {
 const PropertyDetails = async ({ params, searchParams }) => {
 
     const { requested } = await searchParams
-
     const { id } = await params
-
     const { data: property } = await getPropertyById(id);
 
     if (!property) {
         return notFound()
     }
 
+
     const { data: similarProperties } = await getSimilarProperties(property)
-
-
     const user = await getCurrentUser()
+
 
     const isLoggedIn = Boolean(user)
 
@@ -77,7 +76,10 @@ const PropertyDetails = async ({ params, searchParams }) => {
                             <PropertyFacts property={property} />
                             <PropertyDescription description={property.description} />
                             <PropertyAmenities amenities={property.amenities} />
-                            {/* <LandlordCard landlord={property.landlordInfo} />
+                            <LandlordCard landlord={property.landlord}/>
+
+
+                            {/* 
                             <ReviewsList
                                 averageRating={averageRating}
                                 totalReviews={totalReviews}
