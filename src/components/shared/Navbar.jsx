@@ -242,7 +242,7 @@ const Navbar = () => {
                                         className="h-9 w-9 rounded-full object-cover ring-2 ring-white shadow-sm"
 
                                     />
-                                   
+
                                 ) : (
                                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-cyan-500 text-white shadow-sm">
                                         <User className="h-5 w-5" />
@@ -252,7 +252,11 @@ const Navbar = () => {
                                 {/* User info */}
                                 <div className="hidden xl:block text-left">
                                     <p className="max-w-28 truncate text-sm font-semibold text-slate-800">
-                                        {session.user?.name || "User"}
+                                        {session.user?.name
+                                            ?.split(" ")
+                                            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                                            .join(" ") || "User"}
+
                                     </p>
 
                                     <p className="text-xs capitalize text-slate-500">
@@ -376,7 +380,7 @@ const Navbar = () => {
                                             onClick={() => {
                                                 setProfileOpen(false);
 
-                                                signOut({callbackUrl:'/api/auth/signin?callbackUrl=/'});
+                                                signOut({ callbackUrl: '/api/auth/signin?callbackUrl=/' });
                                             }}
                                             className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-red-600 transition-all hover:bg-red-50"
                                         >
@@ -587,7 +591,7 @@ const Navbar = () => {
                                 onClick={() => {
                                     setOpen(false);
 
-                                    signOut({callbackUrl:'/api/auth/signin?callbackUrl=/'});
+                                    signOut({ callbackUrl: '/api/auth/signin?callbackUrl=/' });
                                 }}
                                 className="mt-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
                             >

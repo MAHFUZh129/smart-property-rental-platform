@@ -98,7 +98,7 @@ const PropertyDetails = async ({ params, searchParams }) => {
                                 alreadyReviewed={alreadyReviewed}
                                 justReviewed={reviewed === "1"}
                             />
-* 
+ 
                             <ReviewsList
                                 averageRating={averageRating}
                                 totalReviews={totalReviews}
