@@ -26,7 +26,7 @@ const HowItWorks = () => {
     return (
         <div className="bg-gradient-to-br from-sky-200 via-blue-950 to-slate-400 py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <h2 className="max-w-md font-serif text-3xl text-white sm:text-4xl">
+        <h2 className="max-w-md  font-serif text-3xl text-white sm:text-4xl">
           How the platform works
         </h2>
 

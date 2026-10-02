@@ -13,6 +13,9 @@ import SimilarProperties from '@/components/properties/details/SimilarProperties
 import { notFound } from 'next/navigation';
 import React from 'react';
 import LandlordCard from '@/components/properties/card/LandlordCard';
+import WriteReviewSection from '@/components/properties/details/WriteReviewSection';
+import { getAllReviews, getTenantReviewStatus } from '@/actions/server/reviews';
+import ReviewsList from '@/components/properties/details/ReviewsList';
 
 
 
@@ -36,22 +39,31 @@ export async function generateMetadata({ params }) {
 
 const PropertyDetails = async ({ params, searchParams }) => {
 
-    const { requested } = await searchParams
+    //get params
+    const { requested ,reviewError} = await searchParams
     const { id } = await params
+
+    // get properties
     const { data: property } = await getPropertyById(id);
 
     if (!property) {
         return notFound()
     }
-
-
     const { data: similarProperties } = await getSimilarProperties(property)
-    const user = await getCurrentUser()
 
+    // get user
+    const user = await getCurrentUser()
 
     const isLoggedIn = Boolean(user)
 
 
+    // get reviews
+    const { hasRented, alreadyReviewed ,reviewed} = await getTenantReviewStatus(id, user?.email)
+
+
+    const {allReviews, totalReviews, averageRating} = await getAllReviews(id)
+
+ 
     return (
         <div>
             <main className="min-h-screen bg-slate-50 pb-20">
@@ -76,15 +88,22 @@ const PropertyDetails = async ({ params, searchParams }) => {
                             <PropertyFacts property={property} />
                             <PropertyDescription description={property.description} />
                             <PropertyAmenities amenities={property.amenities} />
-                            <LandlordCard landlord={property.landlord}/>
+                            <LandlordCard landlord={property.landlord} />
 
-
-                            {/* 
+                            <WriteReviewSection
+                                propertyId={property._id}
+                                isLoggedIn={isLoggedIn}
+                                hasRented={hasRented}
+                                reviewError={reviewError}
+                                alreadyReviewed={alreadyReviewed}
+                                justReviewed={reviewed === "1"}
+                            />
+* 
                             <ReviewsList
                                 averageRating={averageRating}
                                 totalReviews={totalReviews}
-                                reviews={reviews}
-                            /> */}
+                                reviews={allReviews}
+                            />  
                         </div>
 
                         <div>

@@ -25,6 +25,7 @@ export const requestRental = async (formData) => {
 
    
     const doc = {
+        propertyId:propertyId,
         landlordName: property.landlord.name,
         landlordEmail: property.landlord.email,
         tenantName: user.name,

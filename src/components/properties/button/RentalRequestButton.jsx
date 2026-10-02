@@ -30,7 +30,8 @@ const RentalRequestButton = ({ propertyId, isLoggedIn, requested }) => {
                     {requested === "1"
                         ? "Rental Requested"
                         : "Request this Rental to Landlord"
-                    }                </button>
+                    }
+                </button>
             </form>
         </div>
     );
