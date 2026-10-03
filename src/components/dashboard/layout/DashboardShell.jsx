@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
-import { getNavItems } from '@/lib/dashboard-nav';
+import { getNavItems } from '@/data/dashboard-Nav/dashboard-nav';
 
 const DashboardShell = ({user, role, children }) => {
 
@@ -14,6 +14,7 @@ const DashboardShell = ({user, role, children }) => {
   return (
     <div className="flex  overflow-hidden bg-slate-50">
       <Sidebar
+      role={role}
         navItems={navItems}
         isOpen={isSidebarOpen}
         onClose={() => setSidebarOpen(false)}

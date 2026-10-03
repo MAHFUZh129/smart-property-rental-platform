@@ -1,11 +1,11 @@
 
 "use client";
 import Logo from "@/components/shared/Logo";
-import { X, Headset, ArrowUpRight,} from "lucide-react";   
+import { X, Headset, ArrowUpRight, } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const Sidebar = ({ isOpen, navItems, onClose }) => {
+const Sidebar = ({ isOpen, navItems, onClose,role }) => {
     const pathname = usePathname();
 
 
@@ -57,10 +57,13 @@ const Sidebar = ({ isOpen, navItems, onClose }) => {
 
                     <nav className="space-y-1.5">
                         {navItems.map(({ label, href, icon: Icon }) => {
+                               
+                                 
                             const isActive =
-                                pathname === href ||
-                                (href !== "/dashboard" &&
-                                    pathname.startsWith(`${href}/`));
+                                href === `/${role}/dashboard` 
+                                    ? pathname === href
+                                    : pathname === href ||
+                                    pathname.startsWith(`${href}/`) ;
 
                             return (
                                 <Link
@@ -72,7 +75,7 @@ const Sidebar = ({ isOpen, navItems, onClose }) => {
                                         : "text-slate-600 hover:bg-slate-50 hover:text-brand-700"
                                         }`}
                                 >
-                                    {/* active Indicator */}
+                                    {/* active indicator */}
                                     {isActive && (
                                         <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-brand-600" />
                                     )}

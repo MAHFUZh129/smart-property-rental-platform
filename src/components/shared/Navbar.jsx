@@ -331,11 +331,7 @@ const Navbar = () => {
 
                                         {/* dshboard */}
                                         <Link
-                                            href={
-                                                session.user?.role === "landlord"
-                                                    ? "/landlord/dashboard"
-                                                    : "/tenant/dashboard"
-                                            }
+                                            href={`${session.user?.role}/dashboard`}
                                             onClick={() => setProfileOpen(false)}
                                             className="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-brand-50 hover:text-brand-700"
                                         >
@@ -558,11 +554,8 @@ const Navbar = () => {
 
                             {/* dashboard */}
                             <Link
-                                href={
-                                    session.user?.role === "landlord"
-                                        ? "/landlord/dashboard"
-                                        : "/tenant/dashboard"
-                                }
+                                href={`${session.user?.role}/dashboard`}
+                                    
                                 onClick={() => setOpen(false)}
                                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
                             >

@@ -9,6 +9,17 @@ import { redirect } from "next/navigation"
 const rentalRequests = dbConnect('rentalRequests')
 const properties = dbConnect('properties')
 
+
+// get from db
+export const getRentalRequests = async()=>{
+
+    const 
+
+}
+
+
+
+// save in db
 export const requestRental = async (formData) => {
 
     const propertyId = formData.get('propertyId')
