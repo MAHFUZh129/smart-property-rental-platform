@@ -259,7 +259,7 @@ const Navbar = () => {
 
                                     </p>
 
-                                    <p className="text-xs capitalize text-slate-500">
+                                    <p className="text-xs capitalize  text-slate-500">
                                         {session.user?.role || "Tenant"}
                                     </p>
                                 </div>
@@ -305,7 +305,12 @@ const Navbar = () => {
 
                                             <div className="min-w-0">
                                                 <p className="truncate text-sm font-bold text-slate-900">
-                                                    {session.user?.name || "User"}
+                                                    {session.user?.name
+                                                        ?.split(" ")
+                                                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                                                        .join(" ") || "User"}
+
+
                                                 </p>
 
                                                 <p className="mt-0.5 truncate text-xs text-slate-500">
@@ -537,7 +542,10 @@ const Navbar = () => {
 
                                 <div className="min-w-0">
                                     <p className="truncate text-sm font-bold text-slate-900">
-                                        {session.user?.name || "User"}
+                                        {session.user?.name
+                                            ?.split(" ")
+                                            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                                            .join(" ") || "User"}                                  
                                     </p>
 
                                     <p className="truncate text-xs text-slate-500">
