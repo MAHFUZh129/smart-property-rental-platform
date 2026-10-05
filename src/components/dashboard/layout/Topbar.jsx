@@ -21,7 +21,7 @@ const Topbar = ({onMenuClick, user, role}) => {
 
                 <div className="ml-auto flex items-center gap-4">
                     <button className="relative text-slate-500 hover:text-brand-700">
-                        <Bell className="size-5" />
+                        <Bell className="size-6" />
                         <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-red-600" />
                     </button>
                     <UserMenu user={user} role={role} />
