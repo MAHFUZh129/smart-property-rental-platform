@@ -16,7 +16,6 @@ const page = async ({ searchParams}) => {
 
     const filters = await searchParams;
 
-    console.log(filters)
 
     const { data, page , totalProperties } = await getProperties(filters);
 

@@ -12,8 +12,8 @@ const STATUS_STYLES = {
 const RequestStatusBadge = ({status}) => {
 
     const config = STATUS_STYLES[status] || STATUS_STYLES.pending
-    const Icon = config.icon
-
+    const Icon = config.icon 
+    
     return (
         <div>
             <span
