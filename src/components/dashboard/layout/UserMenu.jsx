@@ -3,7 +3,7 @@
 import { ChevronDown, LogOut, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
-import RoleBadge from '../ui/RoleBadge';
+import RoleBadge from '../Sharedui/RoleBadge';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 

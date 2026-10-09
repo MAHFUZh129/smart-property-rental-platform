@@ -2,7 +2,7 @@ import React from 'react';
 import { CalendarDays, ShieldCheck } from 'lucide-react';
 import RentalRequestButton from '../button/RentalRequestButton';
 
-const BookingCard = ({property, isLoggedIn, requested}) => {
+const BookingCard = ({property, isLoggedIn,hasRequested, status, requested}) => {
 
     const {createdAt , price, _id} = property
 
@@ -23,7 +23,7 @@ const BookingCard = ({property, isLoggedIn, requested}) => {
  
 
        <div className="mt-5">
-        <RentalRequestButton requested={requested } propertyId={_id} isLoggedIn={isLoggedIn} />
+        <RentalRequestButton requested={requested } status={status} hasRequested={hasRequested} propertyId={_id} isLoggedIn={isLoggedIn} />
       </div>
  
       <div className="mt-5 space-y-2 border-t border-slate-100 pt-4 text-sm text-slate-500">

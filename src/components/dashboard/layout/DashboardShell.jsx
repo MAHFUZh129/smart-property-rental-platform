@@ -12,7 +12,7 @@ const DashboardShell = ({user, role, children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex  overflow-hidden bg-slate-50">
+    <div className="min-h-screen">
       <Sidebar
       role={role}
         navItems={navItems}
@@ -20,7 +20,7 @@ const DashboardShell = ({user, role, children }) => {
         onClose={() => setSidebarOpen(false)}
       />
 
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="min-h-screen lg:ml-70">
         <Topbar user={user} role={role} onMenuClick={() => setSidebarOpen(true)} />
         <main className="flex-1 overflow-y-auto p-4 sm:p-6">{children}</main>
       </div>

@@ -5,9 +5,9 @@ import { getNavItems } from '@/data/dashboard-Nav/dashboard-nav';
 import { redirect } from 'next/navigation';
 
 
-export const metadata = {
-  title: "Dashboard ",
-};
+
+
+ 
  
 
 const Layout = async ({ children }) => {

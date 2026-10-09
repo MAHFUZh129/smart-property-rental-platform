@@ -16,6 +16,7 @@ import LandlordCard from '@/components/properties/card/LandlordCard';
 import WriteReviewSection from '@/components/properties/details/WriteReviewSection';
 import { getAllReviews, getTenantReviewStatus } from '@/actions/server/reviews';
 import ReviewsList from '@/components/properties/details/ReviewsList';
+import { hasRequestedProperty } from '@/actions/server/rental';
 
 
 
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }) {
 const PropertyDetails = async ({ params, searchParams }) => {
 
     //get params
-    const { requested ,reviewError} = await searchParams
+    const { requested ,reviewError,reviewed} = await searchParams
     const { id } = await params
 
     // get properties
@@ -58,10 +59,13 @@ const PropertyDetails = async ({ params, searchParams }) => {
 
 
     // get reviews
-    const { hasRented, alreadyReviewed ,reviewed} = await getTenantReviewStatus(id, user?.email)
+    const { hasRented, alreadyReviewed,} = await getTenantReviewStatus(id, user?.email)
 
+    // console.log(reviewed)
 
     const {allReviews, totalReviews, averageRating} = await getAllReviews(id)
+
+    const {hasRequested, status } = await hasRequestedProperty(id, user?.email )
 
  
     return (
@@ -70,7 +74,7 @@ const PropertyDetails = async ({ params, searchParams }) => {
                 <div className="mx-auto max-w-6xl px-4 pt-6">
                     <BackLink />
 
-                    {requested === "1" && (
+                    {requested === "1" || hasRequested && (
                         <div className="mt-4">
                             <RequestSuccessBanner />
                         </div>
@@ -96,7 +100,8 @@ const PropertyDetails = async ({ params, searchParams }) => {
                                 hasRented={hasRented}
                                 reviewError={reviewError}
                                 alreadyReviewed={alreadyReviewed}
-                                justReviewed={reviewed === "1"}
+                                justReviewed={reviewed}
+                                
                             />
  
                             <ReviewsList
@@ -107,7 +112,7 @@ const PropertyDetails = async ({ params, searchParams }) => {
                         </div>
 
                         <div>
-                            <BookingCard requested={requested} property={property} isLoggedIn={isLoggedIn} />
+                            <BookingCard requested={requested} status={status} hasRequested={hasRequested} property={property} isLoggedIn={isLoggedIn} />
                         </div>
                     </div>
                     <SimilarProperties properties={similarProperties} />

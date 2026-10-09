@@ -1,9 +1,9 @@
 import { getCurrentUser } from '@/actions/server/auth';
 import { getRentalRequests } from '@/actions/server/rental';
 import RequestCard from '@/components/dashboard/tenants/rental-requests/RequestCard';
-import RequestsEmptyState from '@/components/dashboard/tenants/rental-requests/RequestsEmptyState';
-import StatusTabs from '@/components/dashboard/tenants/rental-requests/StatusTabs';
-import PageHeader from '@/components/dashboard/ui/PageHeader';
+import RequestsEmptyState from '@/components/dashboard/Sharedui/RequestsEmptyState';
+import PageHeader from '@/components/dashboard/Sharedui/PageHeader';
+import StatusTabs from '@/components/dashboard/Sharedui/StatusTabs';
 
 
 export const metadata = {

@@ -27,11 +27,9 @@ const page = async ({ searchParams}) => {
                 <PageHeader total={totalProperties} />
                 <div className="mx-auto max-w-6xl px-4 pb-16">
                     <PropertyFilters filters={filters} />
-                    <TypeTabs filters={filters} />
+                    <TypeTabs filters={filters} />        
                     <PropertyGrid properties={data} />                   
                     <Pagination filters={filters} page={page} totalPages={totalPages} />
-
-
                    
                 </div>
             </main>

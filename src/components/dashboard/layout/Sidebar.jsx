@@ -5,9 +5,10 @@ import { X, Headset, ArrowUpRight, } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const Sidebar = ({ isOpen, navItems, onClose,role }) => {
-    const pathname = usePathname();
+const Sidebar = ({ isOpen, navItems, onClose, role }) => {
 
+
+    const pathname = usePathname();
 
     const year = new Date().getFullYear()
 
@@ -24,7 +25,7 @@ const Sidebar = ({ isOpen, navItems, onClose,role }) => {
 
             {/* Sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-slate-200 bg-white text-slate-800 shadow-xl transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:shadow-none ${isOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed inset-y-0 left-0 z-50 flex h-screen w-70 flex-col border-r border-slate-200 bg-white text-slate-800 shadow-xl transition-transform duration-300 lg:translate-x-0 lg:shadow-none ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
                 {/* Logo */}
@@ -57,13 +58,13 @@ const Sidebar = ({ isOpen, navItems, onClose,role }) => {
 
                     <nav className="space-y-1.5">
                         {navItems.map(({ label, href, icon: Icon }) => {
-                               
-                                 
+
+
                             const isActive =
-                                href === `/${role}/dashboard` 
+                                href === `/${role}/dashboard`
                                     ? pathname === href
                                     : pathname === href ||
-                                    pathname.startsWith(`${href}/`) ;
+                                    pathname.startsWith(`${href}/`);
 
                             return (
                                 <Link

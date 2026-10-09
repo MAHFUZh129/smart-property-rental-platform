@@ -1,8 +1,8 @@
-import { Building2, Calendar, MapPin } from 'lucide-react';
+import { ArrowRight, Building2, Calendar, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import RequestStatusBadge from './RequestStatusBadge';
+import RequestStatusBadge from '../../Sharedui/RequestStatusBadge';
 
 const RequestCard = ({request}) => {
 
@@ -68,6 +68,15 @@ const RequestCard = ({request}) => {
           </p>
         )}
       </div>
+      {status === 'approved' && (
+  <Link
+    href="/tenant/dashboard/payments"
+    className="mt-3 inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-brand-200"
+  >
+    Pay Now
+    <ArrowRight className="size-4" />
+  </Link>
+)}
     </div>
     );
 };
