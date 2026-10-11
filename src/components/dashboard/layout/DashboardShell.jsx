@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
-import { getNavItems } from '@/data/dashboard-Nav/dashboard-nav';
+import { getNavItems } from '@/data/dashboard/dashboard-nav';
 
 const DashboardShell = ({user, role, children }) => {
 

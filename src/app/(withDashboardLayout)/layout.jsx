@@ -1,7 +1,7 @@
 import React from 'react';
 import { getCurrentUser } from '@/actions/server/auth';
 import DashboardShell from '@/components/dashboard/layout/DashboardShell';
-import { getNavItems } from '@/data/dashboard-Nav/dashboard-nav';
+import { getNavItems } from '@/data/dashboard/dashboard-nav';
 import { redirect } from 'next/navigation';
 
 

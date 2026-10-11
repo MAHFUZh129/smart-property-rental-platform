@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/authOptions"
 import { revalidatePath } from "next/cache"
+import { createLeaseFromRequest } from "./leases"
 
 
 const rentalRequests = dbConnect('rentalRequests')
@@ -170,7 +171,7 @@ export const updateRentalRequestStatus = async (formData) => {
     const requestId = formData.get("requestId")?.toString();
     const newStatus = formData.get("status")?.toString();
 
-    
+
 
     // 2. Validate input
     if (!requestId || !ObjectId.isValid(requestId)) {
@@ -232,7 +233,7 @@ export const updateRentalRequestStatus = async (formData) => {
         _id: new ObjectId(request.propertyId),
         'landlord.email': session.user.email,
     });
-    
+
 
     if (!reqProperty) {
         return {
@@ -263,14 +264,19 @@ export const updateRentalRequestStatus = async (formData) => {
         };
     }
 
-    // 8. Refresh landlord requests page
-    revalidatePath("/landlord/dashboard/rental-requests");
+    //8. Approving a request creates the lease
+    if (newStatus === "approved" && reqProperty) {
+        await createLeaseFromRequest(request, reqProperty);
+    }
+
+    // 9. Refresh landlord requests page
+    revalidatePath("/landlord/dashboard/requests");
+    revalidatePath("/tenant/dashboard/leases");
+
 
     return {
         success: true,
         message: `Rental request ${newStatus} successfully.`,
     }
-
-
 
 }

@@ -5,25 +5,25 @@ const leases = dbConnect('leases')
 const properties = dbConnect('properties')
 const users = dbConnect('users')
 
+
+// get leases from data
 export const getMyLeases = async (userEmail) => {
 
     const myLeases = await leases.find({ "tenant.email": userEmail }).sort({ createdAt: - 1 }).toArray()
-
-   
 
     if (myLeases.length === 0) return []
 
     const propertyIds = myLeases.map((L) => new ObjectId(L.property.propertyId))
 
-    
+
     const lanlordEmails = myLeases.map((l) => l.landlord.email)
-    
+
     const [leasedProperties, landlords] = await Promise.all([
         properties.find({ _id: { $in: propertyIds } }).toArray(),
         users.find({ email: { $in: lanlordEmails } }).toArray()
     ])
 
-    
+
 
 
     const propertyMap = {}
@@ -46,17 +46,64 @@ export const getMyLeases = async (userEmail) => {
     });
 
 
-     return myLeases.map((l) => ({
-    _id: l._id.toString(),
-    unit: l.unit,
-    monthlyRent: l.monthlyRent,
-    securityDeposit: l.securityDeposit,
-    startDate: l.startDate?.toISOString(),
-    endDate: l.endDate?.toISOString(),
-    status: l.leaseStatus,
-    property: propertyMap[l.property.propertyId] || null,
-    landlordName: landlordMap[l.landlord.email] || "Landlord",
-  }));
+    return myLeases.map((l) => ({
+        _id: l._id.toString(),
+        unit: l.unit,
+        monthlyRent: l.monthlyRent,
+        securityDeposit: l.securityDeposit,
+        startDate: l.startDate?.toISOString(),
+        endDate: l.endDate?.toISOString(),
+        status: l.leaseStatus,
+        property: propertyMap[l.property.propertyId] || null,
+        landlordName: landlordMap[l.landlord.email] || "Landlord",
+    }));
 
+}
+
+
+// save leases in db
+export const createLeaseFromRequest = async (request, property) => {
+
+    
+    const startDate = new Date();
+    const endDate = new Date(startDate);
+    endDate.setFullYear(endDate.getFullYear() + 1)
+
+    // create leases collection
+    const leaseInfo = {
+        requestId: request._id.toString(),
+        tenant: {
+            name: request.tenantName,
+            email: request.tenantEmail,
+        },
+        landlord: {
+            name: request.landlordName,
+            email: request.landlordEmail,
+        },
+        property:{
+            title:property.title,
+            propertyId:property._id.toString()
+        },
+        unit: 1,
+        monthlyRent:property.price,
+        securityDeposit: (property.price) * 3, 
+        startDate,
+        endDate,
+        leaseStatus: "active",
+        createdAt: new Date(),
+    }
+
+    const result = await leases.insertOne(leaseInfo)
+
+    // update available units in properties collection
+    const query = {_id:property._id}
+
+    const updatedDoc={
+        $set:{
+            availableUnits: property.availableUnits - 1
+        }
+    }
+
+    const updatedUnit = await properties.updateOne(query,updatedDoc)
 
 }

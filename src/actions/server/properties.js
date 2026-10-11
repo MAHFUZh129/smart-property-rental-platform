@@ -1,6 +1,8 @@
 'use server'
 import { dbConnect } from "@/lib/dbConnect"
 import { ObjectId } from "mongodb";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "./auth";
 
 
 const properties = dbConnect('properties')
@@ -120,5 +122,27 @@ export const getPropertyById = async (id) => {
    }
 }
 
+
+
+//for Landlord Properties
+export const getLandlordProperties = async () => {
+
+   const user = await getCurrentUser();
+
+   if (!user || user.role !== "landlord") {
+      redirect("/tenant/dashboard");
+   }
+
+   const LandlordEmail = user?.email
+
+   const landlodProperties = await properties.find({ 'landlord.email': LandlordEmail }).toArray()
+
+   return landlodProperties
+
+}
+export const createProperty = async () => {
+
+   
+}
 
 
