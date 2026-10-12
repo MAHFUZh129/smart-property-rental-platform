@@ -1,19 +1,25 @@
 "use client"
-import React, { useActionState, useState } from 'react';
+import React, { useActionState, useEffect, useState } from 'react';
 import { AlertCircle, Banknote, FileText, ImageIcon, Lightbulb, Loader2, MapPin, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Field, FormSection, inputClass } from './Formparts ';
 import Link from 'next/link';
 import { AMENITY_OPTIONS, CITIES, PROPERTY_TYPES } from '@/data/dashboard/landlord-Constants';
 import { uploadImage } from '@/lib/utils/uploadImage';
+import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 const PropertyForm = ({ action, initialValues, propertyId, submitLabel, cancelHref, note }) => {
 
+    const router = useRouter();
     // form submit
     const [state, formAction, isPending] = useActionState(action, {
         errors: {},
         values: initialValues,
         message: "",
+        success: false,
     })
+
+
 
     const v = state?.values || initialValues;
     const e = state?.errors || {}
@@ -57,6 +63,21 @@ const PropertyForm = ({ action, initialValues, propertyId, submitLabel, cancelHr
 
     }
 
+
+    useEffect(() => {
+        if (state.success) {
+            Swal.fire({
+                icon: "success",
+                title: "Property Added!",
+                text: "Your property has been submitted for admin approval.",
+                confirmButtonText: "Great!",
+                confirmButtonColor: "#2563eb",
+            })
+            router.push("/landlord/dashboard/properties?saved=created")
+
+
+        }
+    }, [state.success, router]);
 
     return (
         <div>

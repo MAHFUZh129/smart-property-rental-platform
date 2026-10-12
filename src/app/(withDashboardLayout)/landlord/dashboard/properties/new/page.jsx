@@ -3,8 +3,6 @@ import BackToProperties from '@/components/dashboard/landlords/properties/newPro
 import PropertyForm from '@/components/dashboard/landlords/properties/newProperty/PropertyForm';
 import PageHeader from '@/components/dashboard/Sharedui/PageHeader';
 import { EMPTY_PROPERTY_VALUES } from '@/data/dashboard/PropertyForm';
-import { authOptions } from '@/lib/authOptions';
-import { getServerSession } from 'next-auth';
 import React from 'react';
 
 export const metadata = {
@@ -20,6 +18,7 @@ export const metadata = {
 
 
 const AddProperty = async() => {
+
  
   return (
     <div>

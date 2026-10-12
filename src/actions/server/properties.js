@@ -297,7 +297,13 @@ export const createProperty = async (_prevState, formData) => {
    const result = await properties.insertOne(propertyInfo)
 
    revalidatePath('/landlord/dashboard/properties')
-   redirect("/landlord/dashboard/properties?saved=created")
+   // redirect("/landlord/dashboard/properties?saved=created")
+
+   return {
+      success: true,
+      insertedId: result.insertedId.toString(),
+
+   }
 
 }
 
