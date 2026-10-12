@@ -33,6 +33,7 @@ export const registerUser = async (userData) => {
         image: userData.photoURL,
         password: hashPassword,
         role: userData.role,
+        membersince: new Date()
 
     }
 
