@@ -15,8 +15,8 @@ const PropertyForm = ({ action, initialValues, propertyId, submitLabel, cancelHr
         message: "",
     })
 
-    const v = state.values || initialValues;
-    const e = state.errors || {}
+    const v = state?.values || initialValues;
+    const e = state?.errors || {}
 
     // for uploading images
     const [uploadedImages, setUploadedImages] = useState(() =>
@@ -64,10 +64,10 @@ const PropertyForm = ({ action, initialValues, propertyId, submitLabel, cancelHr
                 {propertyId && <input type="hidden" name="propertyId" value={propertyId} />}
 
                 <div className="space-y-6 lg:col-span-2">
-                    {state.message && (
+                    {state?.message && (
                         <div className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                             <AlertCircle className="size-5 shrink-0" />
-                            {state.message}
+                            {state?.message}
                         </div>
                     )}
 
@@ -198,7 +198,7 @@ const PropertyForm = ({ action, initialValues, propertyId, submitLabel, cancelHr
                                             }
                                             className="absolute right-2 top-2 flex rounded-2xl bg-white px-2 py-1 text-xs font-medium text-red-600 shadow"
                                         >
-                                           <X size={16} /> Remove
+                                            <X size={16} /> Remove
                                         </button>
                                     </div>))
                                 }
