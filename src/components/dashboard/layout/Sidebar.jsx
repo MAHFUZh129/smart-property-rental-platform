@@ -59,12 +59,12 @@ const Sidebar = ({ isOpen, navItems, onClose, role }) => {
                     <nav className="space-y-1.5">
                         {navItems.map(({ label, href, icon: Icon }) => {
 
-
                             const isActive =
                                 href === `/${role}/dashboard`
                                     ? pathname === href
-                                    : pathname === href ||
-                                    pathname.startsWith(`${href}/`);
+                                    : href === `/${role}/dashboard/properties`
+                                        ? pathname === href
+                                        : pathname === href || pathname.startsWith(`${href}/`);
 
                             return (
                                 <Link

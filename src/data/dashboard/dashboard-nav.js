@@ -1,4 +1,4 @@
-import { BarChart3, Building2, ClipboardList, CreditCard, FileSignature, GalleryHorizontalEnd,  LayoutDashboard, MessageSquare, Settings, Star, Users } from "lucide-react";
+import { BarChart3, Building2, ClipboardList, CreditCard, FileSignature, GalleryHorizontalEnd,  HousePlus,  LayoutDashboard, MessageSquare, Settings, Star, Users } from "lucide-react";
 
 const NAV_BY_ROLE = {
     tenant: [
@@ -15,8 +15,9 @@ const NAV_BY_ROLE = {
 
     landlord: [
         { label: "Overview", href: "/landlord/dashboard", icon: LayoutDashboard },
-        { label: "My properties", href: "/landlord/dashboard/properties", icon: Building2 },
-        { label: "Rental requests", href: "/landlord/dashboard/requests", icon: ClipboardList },
+        { label: "Add New Property", href: "/landlord/dashboard/properties/new", icon: HousePlus },
+        { label: "My Properties", href: "/landlord/dashboard/properties", icon: Building2 },
+        { label: "Rental Requests", href: "/landlord/dashboard/requests", icon: ClipboardList },
         { label: "Tenants", href: "/landlord/dashboard/tenants", icon: Users },
         { label: "Reviews", href: "/landlord/dashboard/reviews", icon: Star },
         { label: "Messages", href: "/landlord/dashboard/messages", icon: MessageSquare },
@@ -28,9 +29,9 @@ const NAV_BY_ROLE = {
         { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
         { label: "Properties", href: "/dashboard/properties", icon: Building2 },
         { label: "Users", href: "/dashboard/users", icon: Users },
-        { label: "Rental requests", href: "/dashboard/requests", icon: ClipboardList },
+        { label: "Rental Requests", href: "/dashboard/requests", icon: ClipboardList },
         { label: "Reports", href: "/dashboard/reports", icon: BarChart3 },
-        { label: "Platform settings", href: "/dashboard/settings", icon: Settings },
+        { label: "Platform Settings", href: "/dashboard/settings", icon: Settings },
     ],
 };
 
