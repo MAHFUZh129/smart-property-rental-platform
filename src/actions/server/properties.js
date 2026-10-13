@@ -127,8 +127,8 @@ export const getPropertyById = async (id) => {
 }
 
 
-
-//for Landlord Properties
+// Landlords' actions
+//1. Landlord all Properties
 export const getLandlordProperties = async () => {
 
    const user = await getCurrentUser();
@@ -145,7 +145,7 @@ export const getLandlordProperties = async () => {
 
 }
 
-//for Adding landlords property 
+//2. Adding landlords property 
 
 // here are some functions to save new property in db
 // 1. raw form into plain trimmed strings
@@ -260,8 +260,6 @@ const validate = (values) => {
    return { errors, data };
 }
 
-
-
 export const createProperty = async (_prevState, formData) => {
 
    const user = await getCurrentUser()
@@ -307,4 +305,78 @@ export const createProperty = async (_prevState, formData) => {
 
 }
 
+
+// 3. updating landlords property
+export const getLandlordPropertyById = async (id) => {
+
+   const user = await getCurrentUser()
+
+   if (!user) {
+      return null
+   }
+
+   const propertyID = new ObjectId(id)
+
+   const property = await properties.findOne({
+      _id: propertyID,
+      'landlord.email': user.email
+   })
+
+   return {
+      ...property,
+      _id: property._id.toString()
+   }
+}
+
+// updating the property in db
+export const updateProperty = async (_prevState, formData) => {
+
+   const user = await getCurrentUser();
+   if (!user) redirect("/api/auth/signin?callbackUrl=/dashboard/properties");
+
+   const propertyId = formData.get("propertyId")?.toString()
+   const values = readForm(formData)
+
+   if (user.role !== "landlord" || !ObjectId.isValid(propertyId)) {
+      return { errors: {}, values, message: "You can't edit this property." };
+   }
+
+   const { errors, data } = validate(values);
+   if (Object.keys(errors).length > 0) {
+      return { errors, values, message: "Please fix the highlighted fields." };
+   }
+
+   //  nobody can edit another landlord's listing
+   const existing = await properties.findOne({
+      _id: new ObjectId(propertyId),
+      'landlord.email': user?.email,
+   });
+
+   if (!existing) {
+      return { errors: {}, values, message: "We couldn't find this property in your account." };
+   }
+
+
+   const changes = { ...data, updatedAt: new Date() };
+
+   // A rejected listing goes back to review once the landlord has fixed it
+   if (existing.status === "rejected") {
+      changes.status = "pending"
+   }
+
+
+   const result = await properties.updateOne({ _id: existing._id }, { $set: changes })
+
+
+   revalidatePath("/landlord/dashboard/properties");
+   revalidatePath(`/landlord/dashboard/properties/${propertyId}/edit`);
+
+    return {
+      success: true,
+      insertedId: existing._id.toString(),
+
+   }
+
+
+}
 

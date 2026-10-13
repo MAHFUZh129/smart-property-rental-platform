@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/actions/server/auth';
+import React from 'react';
 import { getLandlordProperties } from '@/actions/server/properties';
 import LandlordPropertyCard from '@/components/dashboard/landlords/properties/LandlordPropertyCard';
 import PropertiesEmptyState from '@/components/dashboard/landlords/properties/PropertiesEmptyState';
@@ -9,7 +9,6 @@ import PageHeader from '@/components/dashboard/Sharedui/PageHeader';
 import { PROPERTY_STATUSES } from '@/data/dashboard/landlord-Constants';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
 
 
 export const metadata = {

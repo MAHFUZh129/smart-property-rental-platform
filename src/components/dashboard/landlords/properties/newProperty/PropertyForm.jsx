@@ -68,16 +68,16 @@ const PropertyForm = ({ action, initialValues, propertyId, submitLabel, cancelHr
         if (state.success) {
             Swal.fire({
                 icon: "success",
-                title: "Property Added!",
-                text: "Your property has been submitted for admin approval.",
+                title: propertyId ? "Property Updated!" : "Property Added!",
+                text:propertyId ? "Your property has been updated successfully." : "Your property has been submitted for admin approval.",
                 confirmButtonText: "Great!",
                 confirmButtonColor: "#2563eb",
             })
-            router.push("/landlord/dashboard/properties?saved=created")
+            router.push( propertyId ? "/landlord/dashboard/properties?saved=updated" : "/landlord/dashboard/properties?saved=created")
 
 
         }
-    }, [state.success, router]);
+    }, [state.success, propertyId, router]);
 
     return (
         <div>

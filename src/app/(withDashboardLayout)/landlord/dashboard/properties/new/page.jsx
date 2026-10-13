@@ -17,9 +17,9 @@ export const metadata = {
 
 
 
-const AddProperty = async() => {
+const AddProperty = async () => {
 
- 
+
   return (
     <div>
       <BackToProperties />
