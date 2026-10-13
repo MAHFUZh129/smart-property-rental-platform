@@ -5,6 +5,8 @@ import PropertyForm from '@/components/dashboard/landlords/properties/newPropert
 import PropertyStatusBadge from '@/components/dashboard/landlords/properties/PropertyStatusBadge';
 import PageHeader from '@/components/dashboard/Sharedui/PageHeader';
 import { toFormValues } from '@/data/dashboard/PropertyForm';
+import { Trash2 } from 'lucide-react';
+import DeleteProperty from '@/components/dashboard/landlords/properties/DeleteProperty';
 
 export const metadata = {
     title: "Edit Property | Rentora Dashboard",
@@ -30,6 +32,7 @@ const EditProperty = async ({ params }) => {
             <PageHeader title="Edit property" subtitle={property.title}>
                 <PropertyStatusBadge status={property.status} />
             </PageHeader>
+            <DeleteProperty propertyId={property._id}/>
             <PropertyForm
                 action={updateProperty}
                 initialValues={toFormValues(property)}

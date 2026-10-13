@@ -324,7 +324,7 @@ export const getLandlordPropertyById = async (id) => {
 
    return {
       ...property,
-      _id: property._id.toString()
+      _id: property?._id.toString()
    }
 }
 
@@ -369,9 +369,8 @@ export const updateProperty = async (_prevState, formData) => {
 
 
    revalidatePath("/landlord/dashboard/properties");
-   revalidatePath(`/landlord/dashboard/properties/${propertyId}/edit`);
 
-    return {
+   return {
       success: true,
       insertedId: existing._id.toString(),
 
@@ -380,3 +379,46 @@ export const updateProperty = async (_prevState, formData) => {
 
 }
 
+
+// 4. deleting landlords property
+export const deleteProperty = async (propertyId) => {
+
+   // 1. checking logged-in user
+   const user = await getCurrentUser();
+
+   if (!user || user.role !== "landlord") {
+      return {
+         success: false,
+         message: "Unauthorized access.",
+      };
+   }
+
+   // 2. Validate property ID
+   if (!ObjectId.isValid(propertyId)) {
+      return {
+         success: false,
+         message: "Invalid property ID.",
+      };
+   }
+
+   // 3. Delete only this landlord's property
+   const result = await properties.deleteOne({
+      _id: new ObjectId(propertyId),
+      "landlord.email": user.email,
+   });
+
+   if (result.deletedCount === 0) {
+      return {
+         success: false,
+         message: "Property not found or you cannot delete it.",
+      };
+   }
+
+   // 4. Refresh property listings
+   revalidatePath("/landlord/dashboard/properties");
+   return {
+      success: true,
+      message: "Property deleted successfully.",
+   };
+
+}

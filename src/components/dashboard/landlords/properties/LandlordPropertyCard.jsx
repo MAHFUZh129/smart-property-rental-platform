@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import PropertyStatusBadge from './PropertyStatusBadge';
-import { Bath, BedDouble, DoorOpen, ExternalLink, Info, MapPin, Pencil, Ruler } from 'lucide-react';
+import { Bath, BedDouble, DoorOpen, ExternalLink, Info, MapPin, Pencil, Ruler,  } from 'lucide-react';
 import Link from 'next/link';
 
 
@@ -58,16 +58,27 @@ const LandlordPropertyCard = ({ property }) => {
                     </p>
                 )}
 
-                <div className="mt-auto flex gap-2 pt-5">
-                    <Link href={`/landlord/dashboard/properties/${_id}/edit`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">
-                        <Pencil className="size-4" /> Edit
+                <div className="mt-auto flex flex-wrap gap-2 pt-5">
+                    <Link
+                        href={`/landlord/dashboard/properties/${_id}/edit`}
+                        className="inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-brand-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
+                    >
+                        <Pencil className="size-4 shrink-0" />
+                        <span>Edit</span>
                     </Link>
+
+
                     {status === "approved" && (
-                        <Link href={`/properties/${_id}`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">
-                            <ExternalLink className="size-4" /> View listing
+                        <Link
+                            href={`/properties/${_id}`}
+                            className="inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                        >
+                            <ExternalLink className="size-4 shrink-0" />
+                            <span className="truncate">View listing</span>
                         </Link>
                     )}
                 </div>
+
             </div>
         </div>
     );
