@@ -32,7 +32,7 @@ const EditProperty = async ({ params }) => {
             <PageHeader title="Edit property" subtitle={property.title}>
                 <PropertyStatusBadge status={property.status} />
             </PageHeader>
-            <DeleteProperty propertyId={property._id}/>
+            <DeleteProperty propertyId={property._id} />
             <PropertyForm
                 action={updateProperty}
                 initialValues={toFormValues(property)}

@@ -18,7 +18,7 @@ const NAV_BY_ROLE = {
         { label: "Add New Property", href: "/landlord/dashboard/properties/new", icon: HousePlus },
         { label: "My Properties", href: "/landlord/dashboard/properties", icon: Building2 },
         { label: "Rental Requests", href: "/landlord/dashboard/requests", icon: ClipboardList },
-        { label: "Tenants", href: "/landlord/dashboard/tenants", icon: Users },
+        { label: "Tenants", href: "/landlord/dashboard/currentTenants", icon: Users },
         { label: "Reviews", href: "/landlord/dashboard/reviews", icon: Star },
         { label: "Messages", href: "/landlord/dashboard/messages", icon: MessageSquare },
         { label: "Settings", href: "/landlord/dashboard/settings", icon: Settings },

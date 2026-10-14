@@ -332,7 +332,7 @@ export const getLandlordPropertyById = async (id) => {
 export const updateProperty = async (_prevState, formData) => {
 
    const user = await getCurrentUser();
-   if (!user) redirect("/api/auth/signin?callbackUrl=/dashboard/properties");
+   if (!user) redirect("/api/auth/signin?callbackUrl=/landlord/dashboard/properties");
 
    const propertyId = formData.get("propertyId")?.toString()
    const values = readForm(formData)
