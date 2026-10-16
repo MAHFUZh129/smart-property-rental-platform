@@ -1,17 +1,18 @@
-'use server'
+"use server"
 import { dbConnect } from "@/lib/dbConnect"
 import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "./auth";
 import { AMENITY_OPTIONS, CITIES, PROPERTY_TYPES } from "@/data/dashboard/landlord-Constants";
 import { revalidatePath } from "next/cache";
+import { notifyAdmins } from "./notifications";
 
 
 
 const properties = dbConnect('properties')
 const users = dbConnect('users')
 
-// for all properties
+//func:1 for all properties
 export const getProperties = async (filters = {}) => {
 
    const query = { status: "approved" };
@@ -81,7 +82,7 @@ export const getProperties = async (filters = {}) => {
 }
 
 
-// similar Properties
+// func:2 similar Properties
 export const getSimilarProperties = async (property) => {
 
    const { status, propertyType, city, _id } = property
@@ -108,7 +109,7 @@ export const getSimilarProperties = async (property) => {
 
 
 
-// for details
+//func:3 for details
 export const getPropertyById = async (id) => {
 
    const result = await properties.findOne({ _id: new ObjectId(id) })
@@ -128,7 +129,7 @@ export const getPropertyById = async (id) => {
 
 
 // Landlords' actions
-//1. Landlord all Properties
+//func:1 Landlord all Properties
 export const getLandlordProperties = async () => {
 
    const user = await getCurrentUser();
@@ -145,7 +146,7 @@ export const getLandlordProperties = async () => {
 
 }
 
-//2. Adding landlords property 
+// Adding landlords property 
 
 // here are some functions to save new property in db
 // 1. raw form into plain trimmed strings
@@ -260,6 +261,7 @@ const validate = (values) => {
    return { errors, data };
 }
 
+// func:2 Adding landlords property 
 export const createProperty = async (_prevState, formData) => {
 
    const user = await getCurrentUser()
@@ -283,16 +285,25 @@ export const createProperty = async (_prevState, formData) => {
 
    const propertyInfo = {
       ...data,
-      status: 'pending',
       landlord: {
          name: landlord.name,
          email: landlord.email,
          memberSince: landlord.memberSince,
       },
+      status: 'pending',
       createdAt: new Date()
    }
 
    const result = await properties.insertOne(propertyInfo)
+
+
+   // sent notifications to all admins
+   await notifyAdmins({
+      type: "property",
+      title: "New property to review",
+      message: `A new property, "${data.title}", has been submitted by ${user.name || "a landlord"} and is awaiting your approval.`,
+      link: "/admin/dashboard/properties",
+   });
 
    revalidatePath('/landlord/dashboard/properties')
    // redirect("/landlord/dashboard/properties?saved=created")
@@ -306,7 +317,7 @@ export const createProperty = async (_prevState, formData) => {
 }
 
 
-// 3. updating landlords property
+// func:3 getting single property by id
 export const getLandlordPropertyById = async (id) => {
 
    const user = await getCurrentUser()
@@ -328,7 +339,7 @@ export const getLandlordPropertyById = async (id) => {
    }
 }
 
-// updating the property in db
+//func:4 updating the property in db
 export const updateProperty = async (_prevState, formData) => {
 
    const user = await getCurrentUser();
@@ -367,6 +378,8 @@ export const updateProperty = async (_prevState, formData) => {
 
    const result = await properties.updateOne({ _id: existing._id }, { $set: changes })
 
+   //  A rejected listing was fixed and is waiting for review again
+
 
    revalidatePath("/landlord/dashboard/properties");
 
@@ -380,7 +393,7 @@ export const updateProperty = async (_prevState, formData) => {
 }
 
 
-// 4. deleting landlords property
+// func:5. deleting landlords property
 export const deleteProperty = async (propertyId) => {
 
    // 1. checking logged-in user

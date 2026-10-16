@@ -1,3 +1,4 @@
+"use server"
 import { dbConnect } from "@/lib/dbConnect"
 import { ObjectId } from "mongodb"
 
@@ -6,7 +7,7 @@ const properties = dbConnect('properties')
 const users = dbConnect('users')
 
 
-// get leases from data
+//func:1 get leases from data
 export const getMyLeases = async (userEmail) => {
 
     const myLeases = await leases.find({ "tenant.email": userEmail }).sort({ createdAt: - 1 }).toArray()
@@ -60,10 +61,8 @@ export const getMyLeases = async (userEmail) => {
 
 }
 
-
-// save leases in db
+//func:2 save leases in db
 export const createLeaseFromRequest = async (request, property) => {
-
     
     const startDate = new Date();
     const endDate = new Date(startDate);
@@ -104,6 +103,7 @@ export const createLeaseFromRequest = async (request, property) => {
         }
     }
 
-    const updatedUnit = await properties.updateOne(query,updatedDoc)
+   const updatedUnit = await properties.updateOne(query,updatedDoc)
+   
 
 }

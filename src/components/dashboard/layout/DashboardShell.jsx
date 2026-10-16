@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import { getNavItems } from '@/data/dashboard/dashboard-nav';
 
-const DashboardShell = ({ user, role, children }) => {
+const DashboardShell = ({unreadCount, user, role, children }) => {
 
   const navItems = getNavItems(role)
 
@@ -25,6 +25,7 @@ const DashboardShell = ({ user, role, children }) => {
           <Topbar
             user={user}
             role={role}
+            unreadCount={unreadCount}
             onMenuClick={() => setSidebarOpen(true)}
           />
         </div>

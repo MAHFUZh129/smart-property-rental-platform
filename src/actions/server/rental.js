@@ -8,13 +8,14 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/authOptions"
 import { revalidatePath } from "next/cache"
 import { createLeaseFromRequest } from "./leases"
+import { createNotification } from "./notifications"
 
 
 const rentalRequests = dbConnect('rentalRequests')
 const properties = dbConnect('properties')
 
 // For tenants
-// get from db
+// func:1 get from db
 export const getRentalRequests = async (userEmail) => {
 
     const requests = await rentalRequests.find({ tenantEmail: userEmail }).sort({ createdAt: -1 }).toArray()
@@ -55,7 +56,7 @@ export const getRentalRequests = async (userEmail) => {
 
 
 
-// save in db
+//func:2 save in db
 export const requestRental = async (formData) => {
 
     const propertyId = formData.get('propertyId')
@@ -92,15 +93,28 @@ export const requestRental = async (formData) => {
 
     }
 
-
     const result = await rentalRequests.insertOne(doc)
+
+
+    // sent notification to the landlord about the new request
+    if (property) {
+        await createNotification({
+            userEmail: property.landlord.email,
+            type: "request",
+            title: "New rental request",
+            message: `${user.name || user.email} has submitted a rental request for "${property.title}". Please review the request and respond at your convenience`,
+            link: "/landlord/dashboard/requests",
+        });
+
+    }
+
 
     redirect(`/properties/${propertyId}?requested=1`);
 
 }
 
 
-// check if tenant already requested this property
+//func:3 check if tenant already requested this property
 export const hasRequestedProperty = async (propertyId, tenantEmail) => {
 
     const existingRequest = await rentalRequests.findOne({
@@ -115,10 +129,11 @@ export const hasRequestedProperty = async (propertyId, tenantEmail) => {
 };
 
 // For landlords
+// func:1 
 export const getLandlordRentalRequests = async (landlordEmail) => {
 
     // 1. Find the requests made for those properties
-    const requests = await rentalRequests.find({ landlordEmail }).toArray()
+    const requests = await rentalRequests.find({ landlordEmail }).sort({ createdAt: -1 }).toArray()
     if (requests.length === 0) return []
 
     // 2. Find this landlord's properties requsted
@@ -164,7 +179,7 @@ export const getLandlordRentalRequests = async (landlordEmail) => {
 
 }
 
-// update Rental Request Status
+//func:2 update Rental Request Status
 export const updateRentalRequestStatus = async (formData) => {
 
     // 1. Get form data
@@ -269,7 +284,22 @@ export const updateRentalRequestStatus = async (formData) => {
         await createLeaseFromRequest(request, reqProperty);
     }
 
-    // 9. Refresh landlord requests page
+    //9. sent notification to the tenant 
+    if (reqProperty) {
+        const approved = newStatus === "approved";
+        await createNotification({
+            userEmail: request.tenantEmail,
+            type: approved ? "approved" : "rejected",
+            title: approved ? "Request approved" : "Request rejected",
+
+            message: approved
+                ? `Your rental request for "${reqProperty.title}" has been approved. Please complete the required payment to finalize your rental agreement.Then your lease will be created ! `
+                : `Your rental request for "${reqProperty.title}" has been declined. If you have any questions, please contact the landlord for further assistance.`,
+            link: approved ? "/tenant/dashboard/leases" : "/tenant/dashboard/requests",
+        })
+    }
+
+    // 10. Refresh landlord requests page
     revalidatePath("/landlord/dashboard/requests");
     revalidatePath("/tenant/dashboard/leases");
 

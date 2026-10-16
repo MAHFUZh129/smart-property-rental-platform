@@ -1,14 +1,9 @@
 import React from 'react';
 import { getCurrentUser } from '@/actions/server/auth';
 import DashboardShell from '@/components/dashboard/layout/DashboardShell';
-import { getNavItems } from '@/data/dashboard/dashboard-nav';
 import { redirect } from 'next/navigation';
+import { getUnreadCount } from '@/actions/server/notifications';
 
-
-
-
- 
- 
 
 const Layout = async ({ children }) => {
 
@@ -20,11 +15,12 @@ const Layout = async ({ children }) => {
     }
 
     const role = user.role || 'tenant'
+    const unreadCount = await getUnreadCount()
 
 
     return (
         <div >
-            <DashboardShell user={user} role={role}>
+            <DashboardShell unreadCount={unreadCount} user={user} role={role}>
                 {children}
             </DashboardShell>
         </div>

@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen, navItems, onClose, role }) => {
                         aria-label="Close sidebar"
                         className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 lg:hidden"
                     >
-                        <X size={20} />
+                        <X size={20} /> 
                     </button>
                 </div>
 

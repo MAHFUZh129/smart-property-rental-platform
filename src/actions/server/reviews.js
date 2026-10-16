@@ -3,12 +3,15 @@
 import { dbConnect } from "@/lib/dbConnect"
 import { getCurrentUser } from "./auth";
 import { redirect } from "next/navigation";
+import { ObjectId } from "mongodb";
+import { createNotification } from "./notifications";
 
 const rentalRequests = dbConnect('rentalRequests')
 const reviews = dbConnect('reviews')
+const properties = dbConnect('properties')
 
 
-// get all reviews for single property
+//Func:1 get all reviews for single property
 export const getAllReviews = async (propertyId) => {
 
 
@@ -19,7 +22,7 @@ export const getAllReviews = async (propertyId) => {
     const totalRating = allReviews.reduce((sum, review) => {
 
         return sum + review.rating
-        
+
     }, 0
     )
 
@@ -35,7 +38,7 @@ export const getAllReviews = async (propertyId) => {
 
 }
 
-
+// Func:2 get tenant reviews 
 export const getTenantReviewStatus = async (propertyId, userEmail) => {
 
     const rental = await rentalRequests.findOne({
@@ -57,7 +60,7 @@ export const getTenantReviewStatus = async (propertyId, userEmail) => {
 
 }
 
-
+// Func:3 save reviews in db
 export const submitReview = async (formData) => {
 
     const propertyId = formData.get('propertyId')
@@ -93,8 +96,8 @@ export const submitReview = async (formData) => {
         redirect(`/properties/${propertyId}?reviewError=already-reviewed`);
     }
 
-    // save in db
 
+    // save in db
     const reviewDoc = {
         propertyId,
         tenantEmail: user.email,
@@ -105,6 +108,21 @@ export const submitReview = async (formData) => {
     }
 
     const review = await reviews.insertOne(reviewDoc)
+
+    // sent notification to landlord when reviewed
+    const property = ObjectId.isValid(propertyId)
+        ? await properties.findOne({ _id: new ObjectId(propertyId) })
+        : null
+
+    if (property) {
+        await createNotification({
+            userEmail: property.landlord.email,
+            type: "review",
+            title: "New review",
+            message: `${user.name || "A tenant"} has rated "${property.title}" ${rating} out of 5 stars and shared their rental experience.`,
+            link: `/properties/${propertyId}`,
+        });
+    }
 
     redirect(`/properties/${propertyId}?reviewed=1`)
 

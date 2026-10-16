@@ -1,4 +1,4 @@
-import { daysLeft, formatDate, initials, SOON_DAYS } from '@/lib/utils/dashboard/Lease-helpers';
+import { daysLeft, formatDate, initials, SOON_DAYS } from '@/lib/utils/dashboard/leases/Lease-helpers';
 import { Banknote, Building2, CalendarDays, DoorOpen, Mail, Phone, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

@@ -5,7 +5,7 @@ import TenantsEmptyState from '@/components/dashboard/landlords/currentTenants/T
 import TenantStats from '@/components/dashboard/landlords/currentTenants/TenantStats';
 import PageHeader from '@/components/dashboard/Sharedui/PageHeader';
 import { getCurrentTenants } from '@/actions/server/tenants';
-import { daysLeft, SOON_DAYS } from '@/lib/utils/dashboard/Lease-helpers';
+import { daysLeft, SOON_DAYS } from '@/lib/utils/dashboard/leases/Lease-helpers';
 
 export const metadata = {
     title: "Tenant Management | Rentora Dashboard",

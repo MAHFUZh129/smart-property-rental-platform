@@ -1,3 +1,4 @@
+"use server"
 import { dbConnect } from "@/lib/dbConnect"
 import { getCurrentUser } from "./auth"
 import { ObjectId } from "mongodb"

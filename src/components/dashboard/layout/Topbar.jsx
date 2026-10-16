@@ -1,8 +1,9 @@
 import { Bell, Menu, Search } from 'lucide-react';
 import React from 'react';
 import UserMenu from './UserMenu';
+import NotificationBell from '../messages/NotificationBell';
 
-const Topbar = ({onMenuClick, user, role}) => {
+const Topbar = ({onMenuClick, user, role,unreadCount}) => {
     return (
         <div>
             <header className="flex h-16 shrink-0 items-center gap-4 border-b border-slate-200 bg-white px-4 sm:px-6">
@@ -21,8 +22,9 @@ const Topbar = ({onMenuClick, user, role}) => {
 
                 <div className="ml-auto flex items-center gap-4">
                     <button className="relative text-slate-500 hover:text-brand-700">
-                        <Bell className="size-6" />
-                        <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-red-600" />
+                        <NotificationBell role={role} initialCount={unreadCount} />
+                        {/* <Bell className="size-6" />
+                        <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-red-600" /> */}
                     </button>
                     <UserMenu user={user} role={role} />
                 </div>
